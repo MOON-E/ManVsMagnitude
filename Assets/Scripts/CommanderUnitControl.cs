@@ -74,6 +74,7 @@ public class CommanderUnitControl : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, mousePosWorld - transform.position, out hit))
             {
+                Debug.DrawLine(transform.position, hit.point, Color.magenta);
                 Unit clickedUnit = hit.transform.GetComponent<Unit>();
                 if (clickedUnit != null)    //We clicked on another unit, so we should contextually decide what action to do
                 {
