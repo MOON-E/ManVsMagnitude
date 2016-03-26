@@ -8,7 +8,7 @@ public class Building : MonoBehaviour {
     BoxCollider mCollider;
     public float mBuildTime = 10;
     float timeUntilBuilt;
-    int collCounter = 0;
+    public int collCounter = 0;
     public int pylonRange;
 
     protected Building(Vector3 Position)
@@ -87,12 +87,19 @@ public class Building : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter(Collision coll){
+    void OnTriggerEnter(Collider coll){
         Debug.Log("Collision enter");
         collCounter++;
     }
     void OnTriggerExit(Collider other)
     {
         collCounter--;
+    }
+    void OnCollisionStay(Collision other)
+    {
+        if (collCounter == 0)
+        {
+            collCounter = 1;
+        }
     }
 }
