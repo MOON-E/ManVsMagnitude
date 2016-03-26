@@ -21,7 +21,7 @@ public class MonsterGridMovement : MonoBehaviour
 
     void Start()
     {
-        transform.position = gm.Find(x, y);
+        transform.position = startPoint = endPoint = gm.Find(x, y);
     }
 
     void Update()
