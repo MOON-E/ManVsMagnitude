@@ -11,7 +11,7 @@ public class Building : MonoBehaviour {
     int collCounter = 0;
     public int pylonRange;
 
-    Building(Vector3 Position)
+    protected Building(Vector3 Position)
     {
         transform.position = Position;
         mBuildState = BuildState.PREBUILD;
