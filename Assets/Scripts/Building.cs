@@ -9,6 +9,7 @@ public class Building : MonoBehaviour {
     public float mBuildTime = 10;
     float timeUntilBuilt;
     int collCounter = 0;
+    public int pylonRange;
 
     Building(Vector3 Position)
     {
@@ -21,25 +22,19 @@ public class Building : MonoBehaviour {
 	void Start () {
         mCollider = GetComponent<BoxCollider>();
         mBuildState = BuildState.PREBUILD;
-        Color color = GetComponent<MeshRenderer>().material.color;
-        color.b = 1.0f;
-        GetComponent<MeshRenderer>().material.SetColor("_Albedo", color);
-        Debug.Log("Should see blue box now");
         timeUntilBuilt = mBuildTime;
+        
+        Color color = GetComponent<MeshRenderer>().material.color;
+        color.a = 0.5f;
+        GetComponent<MeshRenderer>().material.color = color;
+              
 	}
 	
 	// Update is called once per frame
 	void Update () {
         switch(mBuildState){
             case (BuildState.PREBUILD):
-                Debug.Log("Prebuild");
-                if (true || CanBuildHere()){
-                    mBuildState = BuildState.BUILDING;
-                    Color color = GetComponent<MeshRenderer>().material.color;
-                    color.r = 1.0f;
-                    color.a = 0.5f;
-                    GetComponent<MeshRenderer>().material.color = color;
-                }
+                // While in this state, player is deciding whether or not to build, player will manually change state to BUILDING when needed
                 break;
             case (BuildState.BUILDING):
                 Debug.Log("Building");
@@ -58,7 +53,7 @@ public class Building : MonoBehaviour {
             
 	}
 
-    bool CanBuildHere(){
+    public bool CanBuildHere(){
         if (mCollider != null && collCounter == 0)
         {
             return true;
@@ -66,15 +61,20 @@ public class Building : MonoBehaviour {
         return false;
     }
 
+    public void StartBuild()
+    {
+        mBuildState = BuildState.BUILDING;
+        BoxCollider bc = GetComponent<BoxCollider>();
+        if (bc)
+        {
+            bc.isTrigger = false; // enable collisions with this building
+            gameObject.layer = 0;
+        }
+    }
+
     void Build(float deltaTime) //enables collisions 
     {
-        if (timeUntilBuilt == mBuildTime){
-            BoxCollider bc = GetComponent<BoxCollider>();
-            if (bc)
-            {
-                bc.isTrigger = false;
-            }
-        }
+        //Mathf.Lerp(0.0f, 1.0f, .1f); 
         timeUntilBuilt -= deltaTime;
         if (timeUntilBuilt <= float.Epsilon)
         {
@@ -85,7 +85,8 @@ public class Building : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider other){
+    void OnCollisionEnter(Collision coll){
+        Debug.Log("Collision enter");
         collCounter++;
     }
     void OnTriggerExit(Collider other)
