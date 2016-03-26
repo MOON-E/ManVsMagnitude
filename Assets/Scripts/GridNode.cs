@@ -11,6 +11,8 @@ public class GridNode : MonoBehaviour {
 
     public int pylonRange;      //For player power radius
 
+    public bool onFire;
+
 	void Start () {
         gm = GetComponentInParent<GridManager>();
 
