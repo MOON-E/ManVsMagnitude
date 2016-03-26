@@ -100,18 +100,55 @@ public class MonsterGridMovement : MonoBehaviour
 
     public void Special()
     {
+        GridNode[] fireRange = new GridNode[6];
+        int i = 0;
+
         switch(facing) {                    //Destroys 1 block in direction
-            case 0: gm.Smash(x, y + 1);
+            case 0:
+                for(int j=1; j<=2; j++) {
+                    for(int k=-1; k<=1; k++) {
+                        try { fireRange[i] = gm.FindNode(x + k, y + j); }
+                        catch { fireRange[i] = null; }
+                        i++;
+                    }
+                }
                 break;
 
-            case 1: gm.Smash(x, y - 1);
+            case 1:
+                for (int j = 1; j <= 2; j++) {
+                    for (int k = -1; k <= 1; k++) {
+                        try { fireRange[i] = gm.FindNode(x + k, y - j); }
+                        catch { fireRange[i] = null; }
+                        i++;
+                    }
+                }
                 break;
 
-            case 2: gm.Smash(x - 1, y);
+            case 2:
+                for (int j = 1; j <= 2; j++) {
+                    for (int k = -1; k <= 1; k++) {
+                        try { fireRange[i] = gm.FindNode(x - j, y + k); }
+                        catch { fireRange[i] = null; }
+                        i++;
+                    }
+                }
                 break;
 
-            case 3: gm.Smash(x + 1, y);
+            case 3:
+                for (int j = 1; j <= 2; j++) {
+                    for (int k = -1; k <= 1; k++) {
+                        try { fireRange[i] = gm.FindNode(x + j, y + k); }
+                        catch { fireRange[i] = null; }
+                        i++;
+                    }
+                }
                 break;
         }
+
+        foreach(GridNode node in fireRange) {
+            if(node!=null) node.Destroy();
+        }
+
+
     }
 }
