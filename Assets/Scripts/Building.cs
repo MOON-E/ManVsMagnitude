@@ -22,7 +22,9 @@ public class Building : MonoBehaviour {
 	void Start () {
         mCollider = GetComponent<BoxCollider>();
         mBuildState = BuildState.PREBUILD;
+        gameObject.layer = 2; // Ignore raycasts while in Pre-build state
         timeUntilBuilt = mBuildTime;
+       
         
         Color color = GetComponent<MeshRenderer>().material.color;
         color.a = 0.5f;
