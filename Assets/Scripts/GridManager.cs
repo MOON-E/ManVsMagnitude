@@ -33,11 +33,16 @@ public class GridManager : MonoBehaviour {
         return grid[x, y];
     }
 
-    public void Smash(int x, int y)                         //Sets node (x, y) inactive
+    public bool Smash(int x, int y)                         //Sets node (x, y) inactive
     {
-        if (!GridBounds(x, y)) return;
-
-        grid[x, y].Destroy();
+        if (!GridBounds(x, y)) return false;
+		if (grid [x, y].HasBarrier()) {
+			grid [x, y].DestroyBuilding ();
+			return false;
+		} else {
+			grid [x, y].Destroy ();
+		}
+		return true;
     }
 
     bool GridBounds(int x, int y)                           //returns false if node (x, y) is beyond grid limits
