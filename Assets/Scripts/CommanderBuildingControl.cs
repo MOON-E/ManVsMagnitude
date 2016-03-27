@@ -38,21 +38,30 @@ public class CommanderBuildingControl : MonoBehaviour {
         }
         if (mBuildingGhost)
         {
+            Renderer rend = mBuildingGhost.GetComponent<Renderer>();
             Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            GridNode hoverNode = null;
             RaycastHit hit;
+
             if (Physics.Raycast(mouseRay, out hit))
             {
-                GridNode hoverNode = hit.transform.GetComponent<GridNode>();
+                hoverNode = hit.transform.GetComponent<GridNode>();
                 if(hoverNode != null) {
                     mBuildingGhost.transform.position = hoverNode.transform.position;
                 }
             }
-            if (mBuildingGhost.CanBuildHere() && Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                mBuildingGhost.StartBuild();
-                mBuildings.Add(mBuildingGhost);
-                mBuildingGhost = null;
+
+            if ((hoverNode != null) && hoverNode.CanBuildHere()) {
+                rend.material.color = Color.green;
+                if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                    mBuildingGhost.StartBuild();
+                    mBuildings.Add(mBuildingGhost);
+                    hoverNode.building = mBuildingGhost;
+                    mBuildingGhost = null;
+                }
             }
+            else rend.material.color = Color.red;
+                
         }
         
 

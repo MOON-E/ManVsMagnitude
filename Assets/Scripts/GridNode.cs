@@ -6,8 +6,8 @@ public class GridNode : MonoBehaviour {
     public int x, y;
     GridNode[] adjacent = new GridNode[8];
     GridManager gm;
-    public bool hasBase;
-    GameObject pBase;
+    public bool startBase;
+    //GameObject pBase;
 
     public Building building = null;   //Building holder
 
@@ -47,14 +47,14 @@ public class GridNode : MonoBehaviour {
         try { adjacent[7] = gm.FindNode(x - 1, y + 1); }
         catch { adjacent[7] = null; }
 
-        if (hasBase) {
-            pBase = Instantiate(Resources.Load("Prefabs/PlayerBase", typeof(GameObject)), transform.position, transform.rotation) as GameObject;
+        if (startBase) {
+            building = Instantiate(Resources.Load("Prefabs/PlayerBase", typeof(Building)), transform.position, transform.rotation) as Building;
         }
     }
-	
-	void Update () {
+
+    void Update () {
         int maxRange = 0;
-        if (hasBase) maxRange = 3;
+        if (building != null) maxRange = building.pylonRange;
 
         foreach (GridNode node in adjacent) {
             if ((node != null) && (node.pylonRange > maxRange)) {
@@ -65,17 +65,18 @@ public class GridNode : MonoBehaviour {
         pylonRange = maxRange - 1;
 
         if (hovering) rend.material.color = Color.blue;
-        else if (maxRange == 0) rend.material.color = Color.white;
+        else if (maxRange <= 0) rend.material.color = Color.white;
         else rend.material.color = Color.red;
     }
 
     public void Destroy()
     {
-        gameObject.SetActive(false);
-        Destroy(pBase);
-        hasBase = false;
+        if (building != null) {
+            Destroy(building.gameObject);
+            pylonRange = 0;
+        }
         Instantiate(Resources.Load("Particles/Demolish Particles"), transform.position, Quaternion.Euler(-90, 0, 0));
-        pylonRange = 0;
+        gameObject.SetActive(false);
     }
 
     void OnMouseEnter()
@@ -87,6 +88,15 @@ public class GridNode : MonoBehaviour {
     {
         hovering = false;
 
+    }
+
+    public bool CanBuildHere()
+    {
+        if((pylonRange >= 0) && (building == null)) {
+            return true;
+        }
+
+        return false;
     }
 
     void OnMouseDown()
