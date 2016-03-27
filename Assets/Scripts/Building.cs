@@ -10,6 +10,7 @@ public class Building : MonoBehaviour {
     float timeUntilBuilt;
     public int collCounter = 0;
     public int pylonRange;
+	public bool isABarrier = false;
 
 	// Use this for initialization
 	public void Start () {
