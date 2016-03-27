@@ -39,10 +39,13 @@ public class CommanderBuildingControl : MonoBehaviour {
         if (mBuildingGhost)
         {
             Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit info;
-            if (Physics.Raycast(mouseRay, out info))
+            RaycastHit hit;
+            if (Physics.Raycast(mouseRay, out hit))
             {
-                mBuildingGhost.transform.position = info.point;
+                GridNode hoverNode = hit.transform.GetComponent<GridNode>();
+                if(hoverNode != null) {
+                    mBuildingGhost.transform.position = hoverNode.transform.position;
+                }
             }
             if (mBuildingGhost.CanBuildHere() && Input.GetKeyDown(KeyCode.Mouse0))
             {

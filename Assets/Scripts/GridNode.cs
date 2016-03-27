@@ -9,6 +9,8 @@ public class GridNode : MonoBehaviour {
     public bool hasBase;
     GameObject pBase;
 
+    public Building building = null;   //Building holder
+
     public int pylonRange;      //For player power radius
 
     Renderer rend;
