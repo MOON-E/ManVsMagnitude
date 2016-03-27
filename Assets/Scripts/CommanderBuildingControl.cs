@@ -31,8 +31,8 @@ public class CommanderBuildingControl : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.B) && mBuildingGhost == null)
         {
-            Debug.Log("making base");
-            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerBase"), new Vector3(0,0,0), Quaternion.identity);
+            Debug.Log("making building");
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0,0,0), Quaternion.identity);
             mBuildingGhost = obj.GetComponent<Building>();
            
         }
@@ -40,6 +40,20 @@ public class CommanderBuildingControl : MonoBehaviour {
         {
             Debug.Log("making pylon");
             GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
+            mBuildingGhost = obj.GetComponent<Building>();
+           
+        }
+        if (Input.GetKeyDown(KeyCode.L) && mBuildingGhost == null)
+        {
+            Debug.Log("making building");
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Laser"), new Vector3(0,0,0), Quaternion.identity);
+            mBuildingGhost = obj.GetComponent<Building>();
+           
+        }
+        if (Input.GetKeyDown(KeyCode.F) && mBuildingGhost == null)
+        {
+            Debug.Log("making building");
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0,0,0), Quaternion.identity);
             mBuildingGhost = obj.GetComponent<Building>();
            
         }
