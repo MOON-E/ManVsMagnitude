@@ -166,7 +166,7 @@ public class CommanderUnitControl : MonoBehaviour {
     {
         if (startBoxPos != Vector2.zero && endBoxPos != Vector2.zero) {
             Texture2D texture = new Texture2D(1, 1);
-            texture.SetPixel(0, 0, Color.white);
+            texture.SetPixel(0, 0, new Color(1f, 1f, 1f, .5f));
             texture.Apply();
             GUI.skin.box.normal.background = texture;
             GUI.Box(new Rect(startBoxPos.x, -startBoxPos.y+Screen.height, (endBoxPos.x - startBoxPos.x), (- endBoxPos.y + startBoxPos.y)), GUIContent.none);
