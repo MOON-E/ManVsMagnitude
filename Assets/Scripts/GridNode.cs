@@ -11,10 +11,15 @@ public class GridNode : MonoBehaviour {
 
     public int pylonRange;      //For player power radius
 
+    Renderer rend;
+
+    bool hovering; //for hover select
+
     public bool onFire;
 
 	void Start () {
         gm = GetComponentInParent<GridManager>();
+        rend = GetComponent<Renderer>();
 
         try { adjacent[0] = gm.FindNode(x, y + 1); }
         catch { adjacent[0] = null; }
@@ -57,8 +62,9 @@ public class GridNode : MonoBehaviour {
 
         pylonRange = maxRange - 1;
 
-        if (maxRange == 0) GetComponent<Renderer>().material.color = Color.white;
-        else GetComponent<Renderer>().material.color = Color.red;
+        if (hovering) rend.material.color = Color.blue;
+        else if (maxRange == 0) rend.material.color = Color.white;
+        else rend.material.color = Color.red;
     }
 
     public void Destroy()
@@ -68,5 +74,21 @@ public class GridNode : MonoBehaviour {
         hasBase = false;
         Instantiate(Resources.Load("Particles/Demolish Particles"), transform.position, Quaternion.Euler(-90, 0, 0));
         pylonRange = 0;
+    }
+
+    void OnMouseEnter()
+    {
+        hovering = true;
+    }
+
+    void OnMouseExit()
+    {
+        hovering = false;
+
+    }
+
+    void OnMouseDown()
+    {
+        //Instantiate(building, originalPos, Quaternion.identity);
     }
 }

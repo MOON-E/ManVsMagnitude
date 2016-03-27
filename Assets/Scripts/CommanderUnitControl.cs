@@ -6,8 +6,10 @@ public class CommanderUnitControl : MonoBehaviour {
     private ArrayList selectedUnits = new ArrayList();
     private GameObject unitAbilitiesPanel;
 
-	// Use this for initialization
-	void Start () {
+    Vector3 startCorner;   //Drag select
+
+    // Use this for initialization
+    void Start () {
 	    unitAbilitiesPanel = GameObject.Find("Canvas/UnitAbilitiesPanel");
         if(unitAbilitiesPanel != null)
             unitAbilitiesPanel.SetActive(false);
@@ -33,6 +35,7 @@ public class CommanderUnitControl : MonoBehaviour {
         {
             RightClick(mousePosWorld);
         }
+        else LeftRelease(mousePosWorld);
 
 	}
 
@@ -69,6 +72,9 @@ public class CommanderUnitControl : MonoBehaviour {
                     clickedUnit.Select(true);       //change unit color for selection
                 }
             }
+            else if (Input.GetKey(KeyCode.LeftShift)) {
+                startCorner = hit.transform.position;
+            }
             else
             {
                 Debug.DrawLine(transform.position, mousePosWorld, Color.red);
@@ -95,6 +101,18 @@ public class CommanderUnitControl : MonoBehaviour {
         else if(selectedUnits.Count == 0)
         {
             //unitAbilitiesPanel.SetActive(false);
+        }
+    }
+
+    void LeftRelease(Vector3 mousePosWorld)
+    {
+        if(startCorner != null) {
+            RaycastHit hit;
+            if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit)) {
+                Rect selectionBox = new Rect(Mathf.Min(startCorner.x, hit.transform.position.x), Mathf.Min(startCorner.z, hit.transform.position.z),
+                    Mathf.Abs(startCorner.x - hit.transform.position.x), Mathf.Abs(startCorner.y - hit.transform.position.y));
+
+            }
         }
     }
 
