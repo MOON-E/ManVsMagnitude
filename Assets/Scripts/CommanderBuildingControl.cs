@@ -56,7 +56,7 @@ public class CommanderBuildingControl : MonoBehaviour {
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     mBuildingGhost.StartBuild();
                     mBuildings.Add(mBuildingGhost);
-                    hoverNode.building = mBuildingGhost;
+                    hoverNode.Build(mBuildingGhost);
                     mBuildingGhost = null;
                 }
             }
