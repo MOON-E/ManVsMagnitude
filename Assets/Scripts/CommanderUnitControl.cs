@@ -23,7 +23,7 @@ public class CommanderUnitControl : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        Vector3 mousePosWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f));
+        Vector3 mousePosWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 13f));
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -39,9 +39,9 @@ public class CommanderUnitControl : MonoBehaviour {
     void LeftClick(Vector3 mousePosWorld)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, mousePosWorld - transform.position, out hit))
+        if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit))
         {
-            Debug.DrawLine(transform.position, hit.point, Color.green);
+            Debug.DrawLine(mousePosWorld, hit.point, Color.green);
             Unit clickedUnit = hit.transform.GetComponent<Unit>();
             if (clickedUnit != null)
             {
@@ -90,18 +90,18 @@ public class CommanderUnitControl : MonoBehaviour {
         // Display UI Menu for unit abilities. Currently just displays menu if unit is selected. Hides if no units are selected
         if (selectedUnits.Count > 0) 
         {
-            unitAbilitiesPanel.SetActive(true);
+            //unitAbilitiesPanel.SetActive(true);
         }
         else if(selectedUnits.Count == 0)
         {
-            unitAbilitiesPanel.SetActive(false);
+            //unitAbilitiesPanel.SetActive(false);
         }
     }
 
     void RightClick(Vector3 mousePosWorld)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, mousePosWorld - transform.position, out hit))
+        if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit))
         {
             Debug.DrawLine(transform.position, hit.point, Color.magenta);
             Unit clickedUnit = hit.transform.GetComponent<Unit>();
