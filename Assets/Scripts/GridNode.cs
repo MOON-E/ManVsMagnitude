@@ -4,14 +4,13 @@ using System.Collections;
 public class GridNode : MonoBehaviour {
 
     public int x, y;
-    GridNode[] adjacent = new GridNode[8];
     GridManager gm;
     public bool startBase;
     //GameObject pBase;
 
     public Building building = null;   //Building holder
 
-    public int pylonRange;      //For player power radius
+    public int buildStatus = 0; // 1+ = can build here
 
     Renderer rend;
 
@@ -22,58 +21,48 @@ public class GridNode : MonoBehaviour {
 	void Start () {
         gm = GetComponentInParent<GridManager>();
         rend = GetComponent<Renderer>();
-
-        try { adjacent[0] = gm.FindNode(x, y + 1); }
-        catch { adjacent[0] = null; }
-
-        try { adjacent[1] = gm.FindNode(x + 1, y + 1); }
-        catch { adjacent[1] = null; }
-
-        try { adjacent[2] = gm.FindNode(x + 1, y); }
-        catch { adjacent[2] = null; }
-
-        try { adjacent[3] = gm.FindNode(x + 1, y - 1); }
-        catch { adjacent[3] = null; }
-
-        try { adjacent[4] = gm.FindNode(x, y - 1); }
-        catch { adjacent[4] = null; }
-
-        try { adjacent[5] = gm.FindNode(x - 1, y - 1); }
-        catch { adjacent[5] = null; }
-
-        try { adjacent[6] = gm.FindNode(x - 1, y); }
-        catch { adjacent[6] = null; }
-
-        try { adjacent[7] = gm.FindNode(x - 1, y + 1); }
-        catch { adjacent[7] = null; }
-
+        
         if (startBase) {
             building = Instantiate(Resources.Load("Prefabs/PlayerBase", typeof(Building)), transform.position, transform.rotation) as Building;
+            int range = building.pylonRange;
+            for (int xi = -1*range; xi <= range; xi++) {
+                for (int yi = -1*range; yi <= range; yi++) {
+                    try {gm.FindNode(x+xi, y+yi).buildStatus += 1;}
+                    catch {}
+                }
+            }
         }
     }
 
     void Update () {
-        int maxRange = 0;
-        if (building != null) maxRange = building.pylonRange;
+        if (hovering) rend.material.color = Color.blue;
+        else if (buildStatus <= 0) rend.material.color = Color.white;
+        else rend.material.color = Color.red;
+    }
 
-        foreach (GridNode node in adjacent) {
-            if ((node != null) && (node.pylonRange > maxRange)) {
-                maxRange = node.pylonRange;
+    public void Build(Building new_building)
+    {
+        building = new_building;
+        int range = building.pylonRange;
+        for (int xi = -1*range; xi <= range; xi++) {
+            for (int yi = -1*range; yi <= range; yi++) {
+                try {gm.FindNode(x+xi, y+yi).buildStatus += 1;}
+                catch {}
             }
         }
-
-        pylonRange = maxRange - 1;
-
-        if (hovering) rend.material.color = Color.blue;
-        else if (maxRange <= 0) rend.material.color = Color.white;
-        else rend.material.color = Color.red;
     }
 
     public void Destroy()
     {
         if (building != null) {
+            int range = building.pylonRange;
+            for (int xi = -1*range; xi <= range; xi++) {
+                for (int yi = -1*range; yi <= range; yi++) {
+                    try {gm.FindNode(x+xi, y+yi).buildStatus -= 1;}
+                    catch {}
+                }
+            }
             Destroy(building.gameObject);
-            pylonRange = 0;
         }
         Instantiate(Resources.Load("Particles/Demolish Particles"), transform.position, Quaternion.Euler(-90, 0, 0));
         gameObject.SetActive(false);
@@ -92,7 +81,7 @@ public class GridNode : MonoBehaviour {
 
     public bool CanBuildHere()
     {
-        if((pylonRange >= 0) && (building == null)) {
+        if((buildStatus > 0) && (building == null)) {
             return true;
         }
 
