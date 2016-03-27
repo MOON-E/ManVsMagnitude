@@ -14,6 +14,8 @@ public class TwitchIrcExample : MonoBehaviour
     public InputField MessageText;
 	public CommandBuffer cBuff;
 
+	public GameObject alert;
+
     void Start()
     {
         //Subscribe for events
@@ -21,13 +23,7 @@ public class TwitchIrcExample : MonoBehaviour
         TwitchIrc.Instance.OnUserLeft += OnUserLeft;
         TwitchIrc.Instance.OnUserJoined += OnUserJoined;
         TwitchIrc.Instance.OnServerMessage += OnServerMessage;
-        TwitchIrc.Instance.OnExceptionThrown += OnExceptionThrown;
-		var panel = gameObject.Find("MainPanel");
-		if (panel != null) {
-			GameObject a = (GameObject)Instantiate("Prefabs/Alert");
-			a.transform.SetParent(panel.transform, false);
-		}
-
+		TwitchIrc.Instance.OnExceptionThrown += OnExceptionThrown;
     }
 
     public void Connect()
@@ -68,7 +64,9 @@ public class TwitchIrcExample : MonoBehaviour
     {
         ChatText.text += "<b>" + channelMessageArgs.From + ":</b> " + channelMessageArgs.Message + "\n";
         Debug.Log("MESSAGE: " + channelMessageArgs.From + ": " + channelMessageArgs.Message);
-		//V: added functionality to check for various commands
+		ChatText.GetComponentInParent<ScrollRect>()
+			.GetComponent<ScrollRect>()
+				.verticalNormalizedPosition = 0f;
 		if (channelMessageArgs.Message == "!up") {
 			cBuff.Input(0);
 		}
@@ -82,11 +80,12 @@ public class TwitchIrcExample : MonoBehaviour
 			cBuff.Input(3);
 		}
 		else if (channelMessageArgs.Message == "!alert") {
-			var panel = gameObject.Find("MainPanel");
+			GameObject panel = GameObject.Find("MainPanel");
 			if (panel != null) {
-				GameObject a = (GameObject)Instantiate("Prefabs/Alert");
+				GameObject a = (GameObject)Instantiate(alert);
 				a.transform.SetParent(panel.transform, false);
-			}//instantiate a prefab "Alert" at the appropriate location on the canvas
+			}
+			else {print("fail");}
 		}
     }
 

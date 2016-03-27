@@ -4,7 +4,7 @@ using System.Collections;
 
 public class CommandBuffer : MonoBehaviour {
 
-	public int threshold = 5;
+	public int threshold = 1;
     public int specialThreshold = 10;
 	public MonsterGridMovement monster;
 
