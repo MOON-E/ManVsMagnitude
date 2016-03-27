@@ -43,6 +43,20 @@ public class CommanderBuildingControl : MonoBehaviour {
             mBuildingGhost = obj.GetComponent<Building>();
            
         }
+        if (Input.GetKeyDown(KeyCode.L) && mBuildingGhost == null)
+        {
+            Debug.Log("making building");
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Laser"), new Vector3(0,0,0), Quaternion.identity);
+            mBuildingGhost = obj.GetComponent<Building>();
+           
+        }
+        if (Input.GetKeyDown(KeyCode.F) && mBuildingGhost == null)
+        {
+            Debug.Log("making building");
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0,0,0), Quaternion.identity);
+            mBuildingGhost = obj.GetComponent<Building>();
+           
+        }
         if (mBuildingGhost)
         {
             Renderer rend = mBuildingGhost.GetComponent<Renderer>();
