@@ -55,7 +55,10 @@ public class TwitchIrcExample : MonoBehaviour
     //Receive message from server
     void OnServerMessage(string message)
     {
-        ChatText.text += "<b>SERVER:</b> " + message + "\n";
+        if (message == ":>") {
+			ChatText.text += "Successfully Connected to Chat" + "\n";
+		}
+		//ChatText.text += "<b>SERVER:</b> " + message + "\n";
         Debug.Log(message);
     }
 
@@ -79,6 +82,9 @@ public class TwitchIrcExample : MonoBehaviour
 		else if (channelMessageArgs.Message == "!right") {
 			cBuff.Input(3);
 		}
+		else if (channelMessageArgs.Message == "!fire") {
+			cBuff.Input(4);
+		}
 		else if (channelMessageArgs.Message == "!alert") {
 			GameObject panel = GameObject.Find("MainPanel");
 			if (panel != null) {
@@ -92,7 +98,7 @@ public class TwitchIrcExample : MonoBehaviour
     //Get the name of the user who joined to channel 
     void OnUserJoined(UserJoinedEventArgs userJoinedArgs)
     {
-        ChatText.text += "<b>" + "USER JOINED" + ":</b> " + userJoinedArgs.User + "\n";
+        //ChatText.text += "<b>" + "USER JOINED" + ":</b> " + userJoinedArgs.User + "\n";
         Debug.Log("USER JOINED: " + userJoinedArgs.User);
     }
 
@@ -100,7 +106,7 @@ public class TwitchIrcExample : MonoBehaviour
     //Get the name of the user who left the channel.
     void OnUserLeft(UserLeftEventArgs userLeftArgs)
     {
-        ChatText.text += "<b>" + "USER JOINED" + ":</b> " + userLeftArgs.User + "\n";
+        //ChatText.text += "<b>" + "USER JOINED" + ":</b> " + userLeftArgs.User + "\n";
         Debug.Log("USER JOINED: " + userLeftArgs.User);
     }
 

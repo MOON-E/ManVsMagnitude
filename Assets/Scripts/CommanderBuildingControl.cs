@@ -31,8 +31,15 @@ public class CommanderBuildingControl : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.B) && mBuildingGhost == null)
         {
-            Debug.Log("making building");
+            Debug.Log("making base");
             GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerBase"), new Vector3(0,0,0), Quaternion.identity);
+            mBuildingGhost = obj.GetComponent<Building>();
+           
+        }
+        if (Input.GetKeyDown(KeyCode.P) && mBuildingGhost == null)
+        {
+            Debug.Log("making pylon");
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
             mBuildingGhost = obj.GetComponent<Building>();
            
         }
@@ -56,7 +63,7 @@ public class CommanderBuildingControl : MonoBehaviour {
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     mBuildingGhost.StartBuild();
                     mBuildings.Add(mBuildingGhost);
-                    hoverNode.building = mBuildingGhost;
+                    hoverNode.Build(mBuildingGhost);
                     mBuildingGhost = null;
                 }
             }

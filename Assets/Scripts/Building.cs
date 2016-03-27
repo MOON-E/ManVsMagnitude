@@ -11,15 +11,8 @@ public class Building : MonoBehaviour {
     public int collCounter = 0;
     public int pylonRange;
 
-    protected Building(Vector3 Position)
-    {
-        transform.position = Position;
-        mBuildState = BuildState.PREBUILD;
-    }
-
-
 	// Use this for initialization
-	void Start () {
+	public void Start () {
         mCollider = GetComponent<BoxCollider>();
         mBuildState = BuildState.PREBUILD;
         gameObject.layer = 2; // Ignore raycasts while in Pre-build state
@@ -95,6 +88,21 @@ public class Building : MonoBehaviour {
     {
         collCounter--;
     }
+    void OnTriggerStay(Collider other)
+    {
+        if (collCounter == 0)
+        {
+            collCounter = 1;
+        }
+    }
+    void OnCollisionEnter(Collision coll)
+    {
+        collCounter++;
+    }
+    void OnCollisionExit(Collision coll)
+    {
+        collCounter--;
+    }
     void OnCollisionStay(Collision other)
     {
         if (collCounter == 0)
@@ -102,4 +110,5 @@ public class Building : MonoBehaviour {
             collCounter = 1;
         }
     }
+   
 }

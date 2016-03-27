@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBase : Building {
-
+public class NewBehaviourScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        base.Start();
+	
 	}
 	
 	// Update is called once per frame
