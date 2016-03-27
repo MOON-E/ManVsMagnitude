@@ -32,7 +32,7 @@ public class CommanderBuildingControl : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.B) && mBuildingGhost == null)
         {
             Debug.Log("making building");
-            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerBase"), new Vector3(0,0,0), Quaternion.identity);
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0,0,0), Quaternion.identity);
             mBuildingGhost = obj.GetComponent<Building>();
            
         }
