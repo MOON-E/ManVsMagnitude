@@ -1,3 +1,2 @@
-m_EditorVersion: 5.3.4f1
-af630a9a3df459883abfb1365571a9e6c2497f04
+m_EditorVersion: 5.3.2f1
 m_StandardAssetsVersion: 0
