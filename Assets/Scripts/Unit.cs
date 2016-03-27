@@ -12,20 +12,24 @@ public class Unit : MonoBehaviour {
     public Vector3 destination;
 
     //State Variables
-    private bool isMoving = false;
+    protected bool isMoving = false;
+    protected float maxHP = 100.0f;
+    protected float mHP;
+    protected static float attackPower = 5.0f;
 
     //Components
     public Rigidbody rigidbody;
     public NavMeshAgent navmeshagent;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
         rigidbody = GetComponent<Rigidbody>();
         navmeshagent = GetComponent<NavMeshAgent>();
+        mHP = maxHP;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
         //if (isMoving)
         //{
         //    Vector3 toEnd = destination - transform.position;
@@ -53,7 +57,7 @@ public class Unit : MonoBehaviour {
         //}
 	}
 
-    public void MoveTo(Vector3 destination)
+    virtual public void MoveTo(Vector3 destination)
     {
         this.destination = destination;
         this.destination.y = transform.position.y; //Disable verticality for now
