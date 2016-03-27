@@ -10,6 +10,7 @@ public class Tank : Unit {
 	// Use this for initialization
 	void Start () {
         base.Start();
+        CommanderUnitControl mCommander = (CommanderUnitControl)GameObject.FindObjectOfType<CommanderUnitControl>();
 	}
 	
 	// Update is called once per frame
