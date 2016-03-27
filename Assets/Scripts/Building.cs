@@ -11,16 +11,6 @@ public class Building : MonoBehaviour {
     public int collCounter = 0;
     public int pylonRange;
 
-<<<<<<< HEAD
-=======
-    protected Building(Vector3 Position)
-    {
-        transform.position = Position;
-        mBuildState = BuildState.PREBUILD;
-    }
-
->>>>>>> 29d2ecdeb9192d6169d077bf41620f2c380e1ee5
-
 	// Use this for initialization
 	public void Start () {
         mCollider = GetComponent<BoxCollider>();

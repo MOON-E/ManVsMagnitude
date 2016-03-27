@@ -29,14 +29,10 @@ public class Unit : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-<<<<<<< HEAD
 	protected void Update () {
         //if (isMoving)
         //{
         //    Vector3 toEnd = destination - transform.position;
-=======
-	void Update () {
->>>>>>> 29d2ecdeb9192d6169d077bf41620f2c380e1ee5
 
 	}
 
