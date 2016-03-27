@@ -4,9 +4,13 @@ using System.Collections;
 public class CommanderUnitControl : MonoBehaviour {
 
     private ArrayList selectedUnits = new ArrayList();
+
+    public ArrayList allUnits = new ArrayList();        //List of all units for drag select purposes
+
     private GameObject unitAbilitiesPanel;
 
-    Vector3 startCorner;   //Drag select
+    private Vector2 startBoxPos = Vector2.zero;           //drag select box
+    private Vector2 endBoxPos = Vector2.zero;
 
     // Use this for initialization
     void Start () {
@@ -35,9 +39,22 @@ public class CommanderUnitControl : MonoBehaviour {
         {
             RightClick(mousePosWorld);
         }
-        else LeftRelease(mousePosWorld);
 
-	}
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            if (startBoxPos == Vector2.zero) {
+                startBoxPos = Input.mousePosition;
+                Debug.Log("startBoxPos = " + startBoxPos);
+            }
+        }
+        if (Input.GetKey(KeyCode.Mouse0)) {
+                endBoxPos = Input.mousePosition;
+                Debug.Log("endBoxPos = " + endBoxPos);
+            }
+        else {
+            startBoxPos = Vector2.zero;
+            endBoxPos = Vector2.zero;
+        }
+    }
 
     void LeftClick(Vector3 mousePosWorld)
     {
@@ -73,7 +90,9 @@ public class CommanderUnitControl : MonoBehaviour {
                 }
             }
             else if (Input.GetKey(KeyCode.LeftShift)) {
-                startCorner = hit.transform.position;
+                //if (startCorner == null) startCorner = Input.mousePosition;
+                //else selectionRect = new Rect(Mathf.Min(startCorner.x, Input.mousePosition.x), Mathf.Min(startCorner.y, Input.mousePosition.y),
+                //    Mathf.Abs(startCorner.x - Input.mousePosition.x), Mathf.Abs(startCorner.y - Input.mousePosition.y));
             }
             else
             {
@@ -104,18 +123,6 @@ public class CommanderUnitControl : MonoBehaviour {
         }
     }
 
-    void LeftRelease(Vector3 mousePosWorld)
-    {
-        if(startCorner != null) {
-            RaycastHit hit;
-            if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit)) {
-                Rect selectionBox = new Rect(Mathf.Min(startCorner.x, hit.transform.position.x), Mathf.Min(startCorner.z, hit.transform.position.z),
-                    Mathf.Abs(startCorner.x - hit.transform.position.x), Mathf.Abs(startCorner.y - hit.transform.position.y));
-
-            }
-        }
-    }
-
     void RightClick(Vector3 mousePosWorld)
     {
         RaycastHit hit;
@@ -142,5 +149,17 @@ public class CommanderUnitControl : MonoBehaviour {
             unit.Select(false);
         }
         selectedUnits.Clear();
+    }
+
+    void OnGUI()
+    {
+        if (startBoxPos != Vector2.zero && endBoxPos != Vector2.zero) {
+            Texture2D texture = new Texture2D(1, 1);
+            texture.SetPixel(0, 0, Color.white);
+            texture.Apply();
+            GUI.skin.box.normal.background = texture;
+            GUI.Box(new Rect(startBoxPos.x, -startBoxPos.y, (endBoxPos.x - startBoxPos.x), (endBoxPos.y - startBoxPos.y)), GUIContent.none);
+        }
+        
     }
 }

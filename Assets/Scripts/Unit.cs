@@ -50,4 +50,9 @@ public class Unit : MonoBehaviour {
         if (select) GetComponent<Renderer>().material.color = Color.blue;
         else GetComponent<Renderer>().material.color = Color.white;
     }
+
+    public Vector2 ScreenPosition()
+    {
+        return Camera.main.WorldToScreenPoint(transform.position);
+    }
 }

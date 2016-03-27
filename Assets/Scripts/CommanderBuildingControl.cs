@@ -36,6 +36,13 @@ public class CommanderBuildingControl : MonoBehaviour {
             mBuildingGhost = obj.GetComponent<Building>();
            
         }
+        if (Input.GetKeyDown(KeyCode.P) && mBuildingGhost == null)
+        {
+            Debug.Log("making pylon");
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
+            mBuildingGhost = obj.GetComponent<Building>();
+           
+        }
         if (mBuildingGhost)
         {
             Renderer rend = mBuildingGhost.GetComponent<Renderer>();
