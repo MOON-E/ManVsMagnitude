@@ -5,7 +5,8 @@ public class CommanderUnitControl : MonoBehaviour {
 
     private ArrayList selectedUnits = new ArrayList();
 
-    public ArrayList allUnits = new ArrayList();        //List of all units for drag select purposes
+    public Unit[] units;
+    //public ArrayList allUnits = new ArrayList();        //List of all units for drag select purposes
 
     private GameObject unitAbilitiesPanel;
 
@@ -53,6 +54,16 @@ public class CommanderUnitControl : MonoBehaviour {
         else {
             startBoxPos = Vector2.zero;
             endBoxPos = Vector2.zero;
+        }
+
+        if (startBoxPos != Vector2.zero && endBoxPos != Vector2.zero) {
+            Rect selectionBox = new Rect(startBoxPos.x, startBoxPos.y, (endBoxPos.x - startBoxPos.x), (endBoxPos.y - startBoxPos.y));
+            foreach (Unit u in units) {
+                if (selectionBox.Contains(u.ScreenPosition(), true)) {
+                    selectedUnits.Add(u);
+                    u.Select(true);
+                }
+            }
         }
     }
 
@@ -158,7 +169,7 @@ public class CommanderUnitControl : MonoBehaviour {
             texture.SetPixel(0, 0, Color.white);
             texture.Apply();
             GUI.skin.box.normal.background = texture;
-            GUI.Box(new Rect(startBoxPos.x, -startBoxPos.y, (endBoxPos.x - startBoxPos.x), (endBoxPos.y - startBoxPos.y)), GUIContent.none);
+            GUI.Box(new Rect(startBoxPos.x, -startBoxPos.y+Screen.height, (endBoxPos.x - startBoxPos.x), (- endBoxPos.y + startBoxPos.y)), GUIContent.none);
         }
         
     }
