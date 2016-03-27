@@ -32,17 +32,20 @@ public class CommanderBuildingControl : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.B) && mBuildingGhost == null)
         {
             Debug.Log("making building");
-            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/TestBuilding"), new Vector3(0,0,0), Quaternion.identity);
+            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/PlayerBase"), new Vector3(0,0,0), Quaternion.identity);
             mBuildingGhost = obj.GetComponent<Building>();
            
         }
         if (mBuildingGhost)
         {
             Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit info;
-            if (Physics.Raycast(mouseRay, out info))
+            RaycastHit hit;
+            if (Physics.Raycast(mouseRay, out hit))
             {
-                mBuildingGhost.transform.position = info.point;
+                GridNode hoverNode = hit.transform.GetComponent<GridNode>();
+                if(hoverNode != null) {
+                    mBuildingGhost.transform.position = hoverNode.transform.position;
+                }
             }
             if (mBuildingGhost.CanBuildHere() && Input.GetKeyDown(KeyCode.Mouse0))
             {

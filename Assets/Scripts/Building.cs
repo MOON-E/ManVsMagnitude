@@ -11,6 +11,15 @@ public class Building : MonoBehaviour {
     public int collCounter = 0;
     public int pylonRange;
 
+<<<<<<< HEAD
+=======
+    protected Building(Vector3 Position)
+    {
+        transform.position = Position;
+        mBuildState = BuildState.PREBUILD;
+    }
+
+>>>>>>> 29d2ecdeb9192d6169d077bf41620f2c380e1ee5
 
 	// Use this for initialization
 	public void Start () {
@@ -33,13 +42,13 @@ public class Building : MonoBehaviour {
                 // While in this state, player is deciding whether or not to build, player will manually change state to BUILDING when needed
                 break;
             case (BuildState.BUILDING):
-                Debug.Log("Building");
+                //Debug.Log("Building");
                 Build(Time.deltaTime);
                 break;
             case (BuildState.PAUSED): // TODO
                 break;
             case (BuildState.COMPLETED): // TODO
-                Debug.Log("Building Completed");
+                //Debug.Log("Building Completed");
                 break;
             case (BuildState.DAMAGED): //TODO
                 break;
