@@ -18,7 +18,16 @@ public class GridNode : MonoBehaviour {
 
     public bool onFire;
 
+
+    //AudioSource variables for sound
+    public AudioSource buildingBuild;
+    public AudioSource buildingDestroyed;
+
 	void Start () {
+
+        Instantiate(buildingBuild);
+        
+
         gm = GetComponentInParent<GridManager>();
         rend = GetComponent<Renderer>();
         
@@ -42,6 +51,9 @@ public class GridNode : MonoBehaviour {
 
     public void Build(Building new_building)
     {
+        Instantiate(buildingBuild);
+        buildingBuild.Play();
+        print("build");
         building = new_building;
         int range = building.pylonRange;
         for (int xi = -1*range; xi <= range; xi++) {
@@ -54,6 +66,9 @@ public class GridNode : MonoBehaviour {
 
     public void Destroy()
     {
+
+
+        Instantiate(buildingDestroyed);
 		DestroyBuilding ();
         Instantiate(Resources.Load("Particles/Demolish Particles"), transform.position, Quaternion.Euler(-90, 0, 0));
         gameObject.SetActive(false);
