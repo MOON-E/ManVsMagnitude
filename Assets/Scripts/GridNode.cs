@@ -25,7 +25,7 @@ public class GridNode : MonoBehaviour {
 
 	void Start () {
 
-        Instantiate(buildingBuild);
+        if(buildingBuild!=null) Instantiate(buildingBuild);
         
 
         gm = GetComponentInParent<GridManager>();
