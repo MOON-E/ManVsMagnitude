@@ -151,4 +151,9 @@ public class MonsterGridMovement : MonoBehaviour
 
 
     }
+
+    public void TakeDamage(int dmg)
+    {
+
+    }
 }

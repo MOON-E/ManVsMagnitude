@@ -21,6 +21,8 @@ public class Unit : MonoBehaviour {
     public Rigidbody rigidbody;
     public NavMeshAgent navmeshagent;
 
+    public bool isSelected = false;
+
 	// Use this for initialization
 	protected void Start () {
         rigidbody = GetComponent<Rigidbody>();
@@ -47,6 +49,7 @@ public class Unit : MonoBehaviour {
 
     public void Select(bool select)
     {
+        isSelected = select;
         if (select) GetComponent<Renderer>().material.color = Color.blue;
         else GetComponent<Renderer>().material.color = Color.white;
     }
