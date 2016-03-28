@@ -24,10 +24,7 @@ public class GridNode : MonoBehaviour {
     public AudioSource buildingDestroyed;
 
 	void Start () {
-
-        if(buildingBuild!=null) Instantiate(buildingBuild);
         
-
         gm = GetComponentInParent<GridManager>();
         rend = GetComponent<Renderer>();
         
