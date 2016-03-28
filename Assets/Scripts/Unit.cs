@@ -47,7 +47,7 @@ public class Unit : MonoBehaviour {
         navmeshagent.SetDestination(destination);
     }
 
-    public void Select(bool select)
+    virtual public void Select(bool select)
     {
         isSelected = select;
         if (select) GetComponent<Renderer>().material.color = Color.blue;
