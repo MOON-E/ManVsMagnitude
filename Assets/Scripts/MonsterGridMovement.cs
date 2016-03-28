@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MonsterGridMovement : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class MonsterGridMovement : MonoBehaviour
     public int x = 5;               //Starting coordinates
     public int y = 5;                       
     
-    public float shake_duration = 2f;               //Screen Shake variables
+    public float shake_duration = 1f;               //Screen Shake variables
     public float shake_magnitude = 0.5f;
 
     public float stepSpeed = 1f;        //Seconds for monster movement
@@ -18,10 +19,15 @@ public class MonsterGridMovement : MonoBehaviour
     float startTime;                    //For monster movement
     Vector3 startPoint, endPoint;
 
+	public int maxHealth = 100;
+	public Slider healthSlider;
+
 
     void Start()
     {
         transform.position = startPoint = endPoint = gm.Find(x, y);
+		healthSlider.maxValue = maxHealth;
+		healthSlider.value = maxHealth;
     }
 
     void Update()
@@ -36,6 +42,7 @@ public class MonsterGridMovement : MonoBehaviour
 
     public void Command(int i)
     {
+		TakeDamage (1);
         switch (i) {                //switch case for different inputs
             case 0: Up();
                     break;
@@ -165,6 +172,6 @@ public class MonsterGridMovement : MonoBehaviour
 
     public void TakeDamage(int dmg)
     {
-
+		healthSlider.value -= dmg;
     }
 }
