@@ -24,39 +24,29 @@ public class CommanderBuildingControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && mBuildingGhost != null)
-        {
-            DestroyObject(mBuildingGhost.gameObject);
-            mBuildingGhost = null;
-        }
-        if (Input.GetKeyDown(KeyCode.B) && mBuildingGhost == null)
-        {
-            Debug.Log("making building");
-            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0,0,0), Quaternion.identity);
-            mBuildingGhost = obj.GetComponent<Building>();
-           
-        }
-        if (Input.GetKeyDown(KeyCode.P) && mBuildingGhost == null)
-        {
-            Debug.Log("making pylon");
-            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
-            mBuildingGhost = obj.GetComponent<Building>();
-           
-        }
-        if (Input.GetKeyDown(KeyCode.L) && mBuildingGhost == null)
-        {
-            Debug.Log("making building");
-            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Laser"), new Vector3(0,0,0), Quaternion.identity);
-            mBuildingGhost = obj.GetComponent<Building>();
-           
-        }
-        if (Input.GetKeyDown(KeyCode.F) && mBuildingGhost == null)
-        {
-            Debug.Log("making building");
-            GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0,0,0), Quaternion.identity);
-            mBuildingGhost = obj.GetComponent<Building>();
-           
-        }
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+			UnqueueBuilding();
+        if (Input.GetKeyDown (KeyCode.B)) {
+			if (mBuildingGhost != null)
+				UnqueueBuilding ();
+			QueueBarrier ();
+		}
+		if (Input.GetKeyDown(KeyCode.P)){
+			if (mBuildingGhost != null)
+				UnqueueBuilding ();
+			QueuePylon();
+		}
+		if (Input.GetKeyDown (KeyCode.L)) {
+			if (mBuildingGhost != null)
+				UnqueueBuilding ();
+			QueueLaser ();
+		}
+		if (Input.GetKeyDown(KeyCode.F)){
+			if (mBuildingGhost != null)
+				UnqueueBuilding ();
+			QueueFactory();
+		}
+
         if (mBuildingGhost)
         {
             Renderer rend = mBuildingGhost.GetComponent<Renderer>();
@@ -86,5 +76,32 @@ public class CommanderBuildingControl : MonoBehaviour {
         }
         
 
+	}
+
+	public void UnqueueBuilding() {
+		if (mBuildingGhost != null) {
+			DestroyObject (mBuildingGhost.gameObject);
+			mBuildingGhost = null;
+		}
+	}
+	public void QueueBarrier() {
+		Debug.Log("making barrier");
+		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0,0,0), Quaternion.identity);
+		mBuildingGhost = obj.GetComponent<Building>();
+	}
+	public void QueuePylon() {
+		Debug.Log("making pylon");
+		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
+		mBuildingGhost = obj.GetComponent<Building>();
+	}
+	public void QueueLaser() {
+		Debug.Log("making laser");
+		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Laser"), new Vector3(0,0,0), Quaternion.identity);
+		mBuildingGhost = obj.GetComponent<Building>();
+	}
+	public void QueueFactory() {
+		Debug.Log("making factory");
+		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0,0,0), Quaternion.identity);
+		mBuildingGhost = obj.GetComponent<Building>();
 	}
 }
