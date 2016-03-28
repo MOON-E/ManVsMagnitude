@@ -5,7 +5,7 @@ public class CommanderUnitControl : MonoBehaviour {
 
     private ArrayList selectedUnits = new ArrayList();
 
-    public Unit[] units;
+    public ArrayList units = new ArrayList();
     //public ArrayList allUnits = new ArrayList();        //List of all units for drag select purposes
 
     private GameObject unitAbilitiesPanel;
@@ -18,6 +18,10 @@ public class CommanderUnitControl : MonoBehaviour {
 	    unitAbilitiesPanel = GameObject.Find("Canvas/UnitAbilitiesPanel");
         if(unitAbilitiesPanel != null)
             unitAbilitiesPanel.SetActive(false);
+        foreach (Unit u in GameObject.FindObjectsOfType<Unit>())
+        {
+            units.Add(u);
+        }
 	}
 	
     void OnDrawGizmos()

@@ -16,8 +16,12 @@ public class Tank : Unit {
 	// Use this for initialization
 	void Start () {
         base.Start();
+<<<<<<< HEAD
         mFireState = FireState.MOVING;
         cannonRend = cannon.GetComponent<Renderer>();
+=======
+        CommanderUnitControl mCommander = (CommanderUnitControl)GameObject.FindObjectOfType<CommanderUnitControl>();
+>>>>>>> 2448213d7a737b8685ca91a98647884b10892ae7
 	}
 	
 	// Update is called once per frame
