@@ -65,7 +65,7 @@ public class CommanderBuildingControl : MonoBehaviour {
             if ((hoverNode != null) && hoverNode.CanBuildHere()) {
                 rend.material.color = Color.green;
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
-                    mBuildingGhost.StartBuild();
+                    mBuildingGhost.StartBuild(hoverNode);
                     mBuildings.Add(mBuildingGhost);
                     hoverNode.Build(mBuildingGhost);
                     mBuildingGhost = null;

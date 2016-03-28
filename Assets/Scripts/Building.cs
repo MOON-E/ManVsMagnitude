@@ -11,7 +11,8 @@ public class Building : MonoBehaviour {
     public int collCounter = 0;
     public int pylonRange;
     public bool isABarrier = false;
-    Color start_color; 
+
+    GridNode location = null;
 
 	// Use this for initialization
 	public void Start () {
@@ -20,7 +21,6 @@ public class Building : MonoBehaviour {
         gameObject.layer = 2; // Ignore raycasts while in Pre-build state
         timeUntilBuilt = mBuildTime;
        
-        start_color =  GetComponent<MeshRenderer>().material.color;
         /*Color color = GetComponent<MeshRenderer>().material.color;
         color.a = 0.5f;
         GetComponent<MeshRenderer>().material.color = color;*/
@@ -58,7 +58,7 @@ public class Building : MonoBehaviour {
         return false;
     }
 
-    public void StartBuild()
+    public void StartBuild(GridNode loc)
     {
         mBuildState = BuildState.BUILDING;
         BoxCollider bc = GetComponent<BoxCollider>();
@@ -68,6 +68,8 @@ public class Building : MonoBehaviour {
             gameObject.layer = 0;
         }
         GetComponent<MeshRenderer>().material.color = Color.yellow;
+
+        location = loc;
     }
 
     void Build(float deltaTime) //enables collisions 
@@ -82,6 +84,8 @@ public class Building : MonoBehaviour {
             /*Color color = GetComponent<MeshRenderer>().material.color;
             color.a = 1f;
             GetComponent<MeshRenderer>().material.color = color;*/
+
+            location.Activate();
         }
     }
 

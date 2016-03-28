@@ -52,6 +52,10 @@ public class GridNode : MonoBehaviour {
         buildingBuild.Play();
         print("build");
         building = new_building;
+    }
+
+    public void Activate()
+    {
         int range = building.pylonRange;
         for (int xi = -1*range; xi <= range; xi++) {
             for (int yi = -1*range; yi <= range; yi++) {
