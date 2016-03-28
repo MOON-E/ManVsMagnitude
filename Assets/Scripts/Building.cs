@@ -34,7 +34,7 @@ public class Building : MonoBehaviour {
                 // While in this state, player is deciding whether or not to build, player will manually change state to BUILDING when needed
                 break;
             case (BuildState.BUILDING):
-                //Debug.Log("Building");
+                Debug.Log("Building " + (mBuildTime-timeUntilBuilt).ToString() + "/" + (mBuildTime).ToString());
                 Build(Time.deltaTime);
                 break;
             case (BuildState.PAUSED): // TODO
