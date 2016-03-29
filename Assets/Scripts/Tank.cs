@@ -42,25 +42,26 @@ public class Tank : Unit {
 
 	public override void Select(bool select)
 	{
-		Debug.Log ("test");
 		base.Select (select);
-		GameObject deploy;
-		deploy = GameObject.Find ("DeployTanks");
-		if (deploy != null) {
+		//GameObject deploy;
+		//deploy = GameObject.Find ("DeployTanks");
+		//if (deploy != null) {
 			
-			if (select) {
-
-				deploy.SetActive (true);
-				//GameObject a = (GameObject)Instantiate (alert);
-				//a.transform.SetParent (panel.transform, false);
+		if (select) {
 			
-			} else {
-				deploy.SetActive (false);
-				//GameObject a = (GameObject)Instantiate (alert);
-				//a.transform.SetParent (panel.transform, false);
-			
-			}
+			//GameObject dep = GameObject.FindGameObjectWithTag("Deploy");
+			//dep.SetActive(true);
+			//deploy.SetActive (true);
+			//GameObject a = (GameObject)Instantiate (alert);
+			//a.transform.SetParent (panel.transform, false);
+		
+		} else {
+			//deploy.SetActive (false);
+			//GameObject a = (GameObject)Instantiate (alert);
+			//a.transform.SetParent (panel.transform, false);
+		
 		}
+
 	}
 
 

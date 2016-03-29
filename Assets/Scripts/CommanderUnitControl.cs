@@ -177,4 +177,12 @@ public class CommanderUnitControl : MonoBehaviour {
         }
         
     }
+
+	void DeployTanks() {
+		foreach (Unit u in selectedUnits) {
+			if (u is Tank) {
+				((Tank)u).ToFireMode();
+			}
+		}
+	}
 }
