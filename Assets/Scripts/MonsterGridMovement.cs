@@ -122,6 +122,7 @@ public class MonsterGridMovement : MonoBehaviour
     {
         GridNode[] fireRange = new GridNode[6];
         int i = 0;
+        Vector3 fireBreathPosition = transform.position;
 
         switch(facing) {                    //Destroys 1 block in direction
             case 0:
@@ -129,6 +130,7 @@ public class MonsterGridMovement : MonoBehaviour
                     for(int k=-1; k<=1; k++) {
                         try { fireRange[i] = gm.FindNode(x + k, y + j); }
                         catch { fireRange[i] = null; }
+                        fireBreathPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z +5);
                         i++;
                     }
                 }
@@ -139,6 +141,7 @@ public class MonsterGridMovement : MonoBehaviour
                     for (int k = -1; k <= 1; k++) {
                         try { fireRange[i] = gm.FindNode(x + k, y - j); }
                         catch { fireRange[i] = null; }
+                        fireBreathPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z-5);
                         i++;
                     }
                 }
@@ -149,6 +152,7 @@ public class MonsterGridMovement : MonoBehaviour
                     for (int k = -1; k <= 1; k++) {
                         try { fireRange[i] = gm.FindNode(x - j, y + k); }
                         catch { fireRange[i] = null; }
+                        fireBreathPosition = new Vector3(transform.position.x-5, transform.position.y, transform.position.z);
                         i++;
                     }
                 }
@@ -159,13 +163,16 @@ public class MonsterGridMovement : MonoBehaviour
                     for (int k = -1; k <= 1; k++) {
                         try { fireRange[i] = gm.FindNode(x + j, y + k); }
                         catch { fireRange[i] = null; }
+                        fireBreathPosition = new Vector3(transform.position.x + 5, transform.position.y, transform.position.z);
                         i++;
                     }
                 }
                 break;
         }
 
-        foreach(GridNode node in fireRange) {
+        Instantiate(Resources.Load("Particles/FireBreathPrefab"), fireBreathPosition, transform.rotation);
+
+        foreach (GridNode node in fireRange) {
             if(node!=null) node.Destroy();
         }
 
