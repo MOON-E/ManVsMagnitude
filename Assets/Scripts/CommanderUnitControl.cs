@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CommanderUnitControl : MonoBehaviour {
 
@@ -24,13 +25,13 @@ public class CommanderUnitControl : MonoBehaviour {
         }
 	}
 	
-    void OnDrawGizmos()
-    {
-        foreach (Unit unit in selectedUnits)
-        {
-            Gizmos.DrawWireSphere(unit.transform.position, 1f);
-        }
-    }
+    //void OnDrawGizmos()
+    //{
+    //    foreach (Unit unit in selectedUnits)
+    //    {
+    //        Gizmos.DrawWireSphere(unit.transform.position, 1f);
+    //    }
+    //}
 
 	// Update is called once per frame
 	void Update () {
@@ -48,12 +49,10 @@ public class CommanderUnitControl : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             if (startBoxPos == Vector2.zero) {
                 startBoxPos = Input.mousePosition;
-                Debug.Log("startBoxPos = " + startBoxPos);
             }
         }
         if (Input.GetKey(KeyCode.Mouse0)) {
                 endBoxPos = Input.mousePosition;
-                Debug.Log("endBoxPos = " + endBoxPos);
             }
         else {
             startBoxPos = Vector2.zero;
@@ -64,8 +63,10 @@ public class CommanderUnitControl : MonoBehaviour {
             Rect selectionBox = new Rect(startBoxPos.x, startBoxPos.y, (endBoxPos.x - startBoxPos.x), (endBoxPos.y - startBoxPos.y));
             foreach (Unit u in units) {
                 if (selectionBox.Contains(u.ScreenPosition(), true)) {
-                    selectedUnits.Add(u);
-                    u.Select(true);
+                    if (!selectedUnits.Contains(u)) {
+                        selectedUnits.Add(u);
+                        u.Select(true);
+                    }
                 }
             }
         }
@@ -175,6 +176,10 @@ public class CommanderUnitControl : MonoBehaviour {
             GUI.skin.box.normal.background = texture;
             GUI.Box(new Rect(startBoxPos.x, -startBoxPos.y+Screen.height, (endBoxPos.x - startBoxPos.x), (- endBoxPos.y + startBoxPos.y)), GUIContent.none);
         }
+    }
+
+    public void DeathReport(Unit unit)
+    {
         
     }
 }

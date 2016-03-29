@@ -41,9 +41,9 @@ public class GridNode : MonoBehaviour {
     }
 
     void Update () {
-        if (hovering) rend.material.color = Color.blue;
-        else if (buildStatus <= 0) rend.material.color = Color.white;
-        else rend.material.color = Color.red;
+        //if (hovering) rend.material.color = Color.blue;
+        if (buildStatus <= 0) rend.material.color = Color.white;
+        else rend.material.color = Color.green;
     }
 
     public void Build(Building new_building)

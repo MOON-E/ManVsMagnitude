@@ -58,4 +58,9 @@ public class Unit : MonoBehaviour {
     {
         return Camera.main.WorldToScreenPoint(transform.position);
     }
+
+    //void OnDestroy()
+    //{
+    //    Camera.main.GetComponent<CommanderUnitControl>().DeathReport(this);
+    //}
 }
