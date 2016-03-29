@@ -43,7 +43,7 @@ public class GridNode : MonoBehaviour {
     void Update () {
         //if (hovering) rend.material.color = Color.blue;
         if (buildStatus <= 0) rend.material.color = Color.white;
-        else rend.material.color = Color.green;
+        else rend.material.color = new Color(.5f, .5f, 1f);
     }
 
     public void Build(Building new_building)
@@ -117,6 +117,9 @@ public class GridNode : MonoBehaviour {
 
     void OnMouseDown()
     {
-        //Instantiate(building, originalPos, Quaternion.identity);
+        if(building is Missile) {
+            Missile m = building as Missile;
+            m.launch();
+        }
     }
 }

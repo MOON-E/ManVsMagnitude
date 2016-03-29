@@ -14,6 +14,8 @@ public class CommanderBuildingControl : MonoBehaviour {
     public static Dictionary<KeyCode, string> BuildHotkeyToBuildingMap;
     public static Dictionary<string, GameObject> NameToBuildingMap;
 
+    bool missileTargeting;
+
     Building mBuildingGhost = null; // reference to "ghost" building you plan to build
     List<Building> mBuildings = new List<Building>();
 
@@ -24,7 +26,7 @@ public class CommanderBuildingControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1)&&!missileTargeting)
 			UnqueueBuilding();
         if (Input.GetKeyDown (KeyCode.B)) {
 			if (mBuildingGhost != null)
@@ -75,10 +77,21 @@ public class CommanderBuildingControl : MonoBehaviour {
                 
         }
         
+        if(missileTargeting && Input.GetKeyDown(KeyCode.Mouse1)) {
+            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
+            if (Physics.Raycast(mouseRay, out hit)) {
+                UnqueueBuilding();
+                GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/MissileBlast"), hit.point, Quaternion.identity);
+            }
+        }
 	}
 
 	public void UnqueueBuilding() {
+
+        missileTargeting = false;
+
 		if (mBuildingGhost != null) {
 			DestroyObject (mBuildingGhost.gameObject);
 			mBuildingGhost = null;
@@ -86,22 +99,45 @@ public class CommanderBuildingControl : MonoBehaviour {
 	}
 	public void QueueBarrier() {
 		Debug.Log("making barrier");
-		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0,0,0), Quaternion.identity);
+        UnqueueBuilding();
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0,0,0), Quaternion.identity);
 		mBuildingGhost = obj.GetComponent<Building>();
 	}
 	public void QueuePylon() {
 		Debug.Log("making pylon");
-		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
+        UnqueueBuilding();
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
 		mBuildingGhost = obj.GetComponent<Building>();
 	}
 	public void QueueLaser() {
-		Debug.Log("making laser");
-		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Laser"), new Vector3(0,0,0), Quaternion.identity);
+		Debug.Log("making missile");
+        UnqueueBuilding();
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Missile"), new Vector3(0,0,0), Quaternion.identity);
 		mBuildingGhost = obj.GetComponent<Building>();
 	}
 	public void QueueFactory() {
 		Debug.Log("making factory");
-		GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0,0,0), Quaternion.identity);
+        UnqueueBuilding();
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0,0,0), Quaternion.identity);
 		mBuildingGhost = obj.GetComponent<Building>();
 	}
+
+    public void MissileLaunch()
+    {
+        Debug.Log("launching missile");
+        UnqueueBuilding();
+        missileTargeting = true;
+    }
+
+    void OnGUI()
+    {
+        if (missileTargeting) {
+            //Texture2D texture = new Texture2D(1, 1);
+            //texture.SetPixel(0, 0, new Color(1f, 0f, 0f, .5f));
+            //texture.Apply();
+            //GUI.skin.box.normal.background = texture;
+            GUI.DrawTexture(new Rect(Input.mousePosition.x - 50, (-Input.mousePosition.y - 50)+Screen.height, 100, 100),
+                Resources.Load("Images/MissileCircle") as Texture);
+        }
+    }
 }
