@@ -9,15 +9,18 @@ public class Tank : Unit {
     public float attackRange = 20f;
     public int attackDamage = 5;
 
+    public AudioSource tankSelectinon, tankMovement, tankAttack;     //Audio prefabs
+
     FireState mFireState;
 
     public GameObject cannon;
-    Renderer cannonRend;
+    Renderer rend, cannonRend;
 
 	// Use this for initialization
 	void Start () {
         base.Start();
         mFireState = FireState.MOVING;
+        rend = GetComponent<Renderer>();
         cannonRend = cannon.GetComponent<Renderer>();
         CommanderUnitControl mCommander = (CommanderUnitControl)GameObject.FindObjectOfType<CommanderUnitControl>();
 	}
@@ -43,11 +46,29 @@ public class Tank : Unit {
 	public override void Select(bool select)
 	{
 		base.Select (select);
+<<<<<<< HEAD
 		//GameObject deploy;
 		//deploy = GameObject.Find ("DeployTanks");
 		//if (deploy != null) {
 			
 		if (select) {
+=======
+        Instantiate(tankSelectinon);
+        GameObject deploy;
+		deploy = GameObject.Find ("DeployTanks");
+		if (deploy != null) {
+			
+			if (select) {
+
+				deploy.SetActive (true);        //Selection audio cue
+				//GameObject a = (GameObject)Instantiate (alert);
+				//a.transform.SetParent (panel.transform, false);
+			
+			} else {
+				deploy.SetActive (false);
+				//GameObject a = (GameObject)Instantiate (alert);
+				//a.transform.SetParent (panel.transform, false);
+>>>>>>> da8faafdd6e08504e10f5caea447a92c6e4a9088
 			
 			//GameObject dep = GameObject.FindGameObjectWithTag("Deploy");
 			//dep.SetActive(true);
@@ -68,6 +89,8 @@ public class Tank : Unit {
     void FireAttack()
     {
         MonsterGridMovement monster = null;
+
+        Instantiate(tankAttack);        //Attack sound effect
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);       //Find monster
         foreach (Collider c in hitColliders) {
@@ -98,12 +121,14 @@ public class Tank : Unit {
     {
 		base.MoveTo(gameObject.transform.position);
         mFireState = FireState.CANFIRE;
+        rend.material.color = Color.red;
         Debug.Log("canfire");
     }
 
     public void ToMoveMode()
     {
         mFireState = FireState.MOVING;
+        rend.material.color = Color.blue;
         Debug.Log("canmove");
     }
 

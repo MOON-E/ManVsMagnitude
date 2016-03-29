@@ -22,6 +22,8 @@ public class MonsterGridMovement : MonoBehaviour
 	public int maxHealth = 100;
 	public Slider healthSlider;
 
+    public AudioSource tankDeath;       //tank death sound cause screw you arrays
+
 
     void Start()
     {
@@ -173,5 +175,13 @@ public class MonsterGridMovement : MonoBehaviour
     public void TakeDamage(int dmg)
     {
 		healthSlider.value -= dmg;
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.GetComponent<Unit>()) {
+            col.gameObject.SetActive(false);
+            Instantiate(tankDeath);
+        }
     }
 }

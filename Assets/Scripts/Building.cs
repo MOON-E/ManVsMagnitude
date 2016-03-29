@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Building : MonoBehaviour {
-    enum BuildState{PREBUILD, BUILDING, PAUSED, COMPLETED, DAMAGED};
+    protected enum BuildState{PREBUILD, BUILDING, PAUSED, COMPLETED, DAMAGED};
 
-    BuildState mBuildState;
+    protected BuildState mBuildState;
     BoxCollider mCollider;
     public float mBuildTime = 10;
     float timeUntilBuilt;
@@ -28,7 +28,7 @@ public class Building : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
         switch(mBuildState){
             case (BuildState.PREBUILD):
                 // While in this state, player is deciding whether or not to build, player will manually change state to BUILDING when needed
