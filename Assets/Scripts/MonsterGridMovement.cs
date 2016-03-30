@@ -45,11 +45,13 @@ public class MonsterGridMovement : MonoBehaviour
                 transform.position = Vector3.Lerp(startPoint, endPoint, moveCompletion);
             }
         }
+		if (Input.GetKeyDown(KeyCode.R) && currstate == state.PLAYERWON)
+			Application.LoadLevel (0);
     }
 
     public void Command(int i)
     {
-		//TakeDamage (1);
+		//TakeDamage (100);
         switch (i) {                //switch case for different inputs
             case 0: Up();
                     break;

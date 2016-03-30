@@ -153,7 +153,8 @@ public class CommanderUnitControl : MonoBehaviour {
             {
                 foreach (Unit unit in selectedUnits)
                 {
-                    unit.MoveTo(hit.point);
+					if (unit.isActiveAndEnabled)
+                    	unit.MoveTo(hit.point);
                 }
             }
         }
