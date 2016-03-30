@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class MonsterGridMovement : MonoBehaviour
 {
+	enum state{NORMAL, PLAYERWON};
+	private state currstate = state.NORMAL;
 
     public GridManager gm;
     int facing = 0;                 //direction the monster is currently facing
@@ -23,6 +25,9 @@ public class MonsterGridMovement : MonoBehaviour
 	public Slider healthSlider;
 
     public AudioSource tankDeath;       //tank death sound cause screw you arrays
+
+	public GameObject PlayerWinCanvas;
+	public GameObject UICanvas;
 
 
     void Start()
@@ -173,7 +178,7 @@ public class MonsterGridMovement : MonoBehaviour
         Instantiate(Resources.Load("Particles/FireBreathPrefab"), fireBreathPosition, transform.rotation);
 
         foreach (GridNode node in fireRange) {
-            if(node!=null) node.Destroy();
+            if(node!=null) gm.Smash(node.x,node.y);
         }
 
 
@@ -182,6 +187,11 @@ public class MonsterGridMovement : MonoBehaviour
     public void TakeDamage(int dmg)
     {
 		healthSlider.value -= dmg;
+		if (healthSlider.value <= 0) {
+			currstate = state.PLAYERWON;
+			UICanvas.SetActive (false);
+			PlayerWinCanvas.SetActive (true);
+		}
     }
 
     void OnCollisionEnter(Collision col)

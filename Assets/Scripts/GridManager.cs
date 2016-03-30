@@ -3,8 +3,18 @@ using System.Collections;
 
 public class GridManager : MonoBehaviour {
 
+	private enum state{NORMAL, MONSTERWON};
+	private state currState = state.NORMAL;
     public int gridWidth, gridHeight;
     GridNode[,] grid = new GridNode[10,10];
+	public int numBases = 2;
+	public GameObject UICanvas;
+	public GameObject MonsterWinCanvas;
+
+	void Update() {
+		if (Input.GetKeyDown(KeyCode.R) && currState == state.MONSTERWON)
+			Application.LoadLevel (0);
+	}
 
 	void Awake () {
 	    foreach (Transform child in transform) {            //Get all the grid nodes and store them in array
@@ -33,15 +43,17 @@ public class GridManager : MonoBehaviour {
         return grid[x, y];
     }
 
-    public bool Smash(int x, int y)                         //Sets node (x, y) inactive
+    public bool Smash(int x, int y)                        
     {
         if (!GridBounds(x, y)) return false;
 		if (grid [x, y].HasBarrier()) {
-			grid [x, y].DestroyBuilding ();
+			if (grid [x, y].DestroyBuilding ()) numBases--;
 			return false;
 		} else {
-			grid [x, y].Destroy ();
+			if (grid [x, y].Destroy ()) numBases--;
 		}
+		if (numBases == 0)
+			MonsterWins ();
 		return true;
     }
 
@@ -54,4 +66,10 @@ public class GridManager : MonoBehaviour {
 
         return true;
     }
+
+	void MonsterWins() {
+		UICanvas.SetActive (false);
+		MonsterWinCanvas.SetActive (true);
+		currState = state.MONSTERWON;
+	}
 }

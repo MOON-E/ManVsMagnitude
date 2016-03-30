@@ -65,17 +65,17 @@ public class GridNode : MonoBehaviour {
         }
     }
 
-    public void Destroy()
+    public bool Destroy()
     {
-
-
+		
         Instantiate(buildingDestroyed);
-		DestroyBuilding ();
+		bool r = DestroyBuilding ();
         Instantiate(Resources.Load("Particles/Demolish Particles"), transform.position, Quaternion.Euler(-90, 0, 0));
         gameObject.SetActive(false);
+		return r;
     }
 
-	public void DestroyBuilding() {
+	public bool DestroyBuilding() { //returnss if the destroyed building was a base
 		if (building != null) {
 			int range = building.pylonRange;
 			for (int xi = -1*range; xi <= range; xi++) {
@@ -85,7 +85,9 @@ public class GridNode : MonoBehaviour {
 				}
 			}
 			Destroy(building.gameObject);
+			if (startBase) return true;
 		}
+		return false;
 	}
 
 	public bool HasBarrier() {
