@@ -22,6 +22,9 @@ public class CommandBuffer : MonoBehaviour {
 
             uiSliders[i].value = specialBuffer;
         }
+        else if (i == 5) {
+            Instantiate(Resources.Load("Audio/Kappa"));
+        }
         else {
             moveBuffers[i]++;
 

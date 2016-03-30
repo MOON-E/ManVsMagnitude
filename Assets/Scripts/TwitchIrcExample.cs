@@ -85,6 +85,9 @@ public class TwitchIrcExample : MonoBehaviour
 		else if (channelMessageArgs.Message == "!fire") {
 			cBuff.Input(4);
 		}
+        else if (channelMessageArgs.Message == "Kappa") {
+            cBuff.Input(5);
+        }
 		else if (channelMessageArgs.Message == "!alert") {
 			GameObject panel = GameObject.Find("MainPanel");
 			if (panel != null) {
