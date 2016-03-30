@@ -117,9 +117,14 @@ public class GridNode : MonoBehaviour {
 
     void OnMouseDown()
     {
-        if(building is Missile) {
-            Missile m = building as Missile;
-            m.launch();
-        }
+		//Debug.Log ("clicked a building node");
+        if (building is Missile) {
+			Missile m = building as Missile;
+			m.launch ();
+		} 
+		if (building is Factory) {
+			//Debug.Log("It's a factory");
+			((Factory)building).StartBuilding();
+		}
     }
 }

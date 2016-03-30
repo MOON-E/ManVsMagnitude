@@ -11,6 +11,7 @@ public class Building : MonoBehaviour {
     public int collCounter = 0;
     public int pylonRange;
     public bool isABarrier = false;
+	public bool isAFactory = false;
 
     GridNode location = null;
 
