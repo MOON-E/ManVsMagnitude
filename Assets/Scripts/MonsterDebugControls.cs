@@ -15,10 +15,10 @@ public class MonsterDebugControls : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-        if (Input.GetKeyDown(KeyCode.UpArrow)) cb.Input(0);
-        if (Input.GetKeyDown(KeyCode.DownArrow)) cb.Input(1);
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) cb.Input(2);
-        if (Input.GetKeyDown(KeyCode.RightArrow)) cb.Input(3);
-        if (Input.GetKeyDown(KeyCode.Space)) cb.Input(4);
+        if (Input.GetKeyDown(KeyCode.UpArrow)) cb.Input(0, "God");
+		if (Input.GetKeyDown(KeyCode.DownArrow)) cb.Input(1, "God");
+		if (Input.GetKeyDown(KeyCode.LeftArrow)) cb.Input(2, "God");
+		if (Input.GetKeyDown(KeyCode.RightArrow)) cb.Input(3, "God");
+		if (Input.GetKeyDown(KeyCode.Space)) cb.Input(4, "God");
     }
 }

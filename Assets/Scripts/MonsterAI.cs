@@ -20,7 +20,7 @@ public class MonsterAI : MonoBehaviour {
             if (!toggle.isOn) return;
             if (Time.time > timer + min_time) { // trigger monster action
                 int action = (int)(Random.value * 100) % 4;
-                buffer.Input(action);
+                buffer.Input(action,"Beep Boop");
                 timer = Time.time;
             }
 	}

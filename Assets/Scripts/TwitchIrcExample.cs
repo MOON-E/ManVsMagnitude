@@ -14,8 +14,6 @@ public class TwitchIrcExample : MonoBehaviour
     public InputField MessageText;
 	public CommandBuffer cBuff;
 
-	public GameObject alert;
-
     void Start()
     {
         //Subscribe for events
@@ -71,31 +69,23 @@ public class TwitchIrcExample : MonoBehaviour
 			.GetComponent<ScrollRect>()
 				.verticalNormalizedPosition = 0f;
 		if (channelMessageArgs.Message == "!up") {
-			cBuff.Input(0);
+			cBuff.Input(0,channelMessageArgs.From);
 		}
 		else if (channelMessageArgs.Message == "!down") {
-			cBuff.Input(1);
+			cBuff.Input(1,channelMessageArgs.From);
 		}
 		else if (channelMessageArgs.Message == "!left") {
-			cBuff.Input(2);
+			cBuff.Input(2,channelMessageArgs.From);
 		}
 		else if (channelMessageArgs.Message == "!right") {
-			cBuff.Input(3);
+			cBuff.Input(3,channelMessageArgs.From);
 		}
 		else if (channelMessageArgs.Message == "!fire") {
-			cBuff.Input(4);
+			cBuff.Input(4,channelMessageArgs.From);
 		}
         else if (channelMessageArgs.Message == "Kappa") {
-            cBuff.Input(5);
+			cBuff.Input(5,channelMessageArgs.From);
         }
-		else if (channelMessageArgs.Message == "!alert") {
-			GameObject panel = GameObject.Find("MainPanel");
-			if (panel != null) {
-				GameObject a = (GameObject)Instantiate(alert);
-				a.transform.SetParent(panel.transform, false);
-			}
-			else {print("fail");}
-		}
     }
 
     //Get the name of the user who joined to channel 
