@@ -49,7 +49,7 @@ public class MonsterGridMovement : MonoBehaviour
 
     public void Command(int i)
     {
-		TakeDamage (1);
+		//TakeDamage (1);
         switch (i) {                //switch case for different inputs
             case 0: Up();
                     break;
