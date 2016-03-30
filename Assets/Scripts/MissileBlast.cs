@@ -32,4 +32,12 @@ public class MissileBlast : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
+
+    void OnGUI()
+    {
+            GUI.DrawTexture(new Rect(Camera.main.WorldToScreenPoint(transform.position).x - 50,
+                                    -Camera.main.WorldToScreenPoint(transform.position).y - 50 + Screen.height,
+                                    100, 100),
+                Resources.Load("Images/MissileCircle") as Texture);
+    }
 }
