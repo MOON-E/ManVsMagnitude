@@ -43,6 +43,12 @@ public class CommandBuffer : MonoBehaviour {
         }
 
     }
+
+    public void Color(Color c, string name)
+    {
+        monster.gameObject.GetComponent<Renderer>().material.color = c;
+    }
+
 	void alert(int i, string name) {
 		GameObject panel = GameObject.Find ("MainPanel");
 		if (panel != null) {

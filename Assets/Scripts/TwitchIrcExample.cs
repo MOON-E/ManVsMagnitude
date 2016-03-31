@@ -65,31 +65,64 @@ public class TwitchIrcExample : MonoBehaviour
     {
         ChatText.text += "<b>" + channelMessageArgs.From + ":</b> " + channelMessageArgs.Message + "\n";
         Debug.Log("MESSAGE: " + channelMessageArgs.From + ": " + channelMessageArgs.Message);
-		ChatText.GetComponentInParent<ScrollRect>()
-			.GetComponent<ScrollRect>()
-				.verticalNormalizedPosition = 0f;
-		if (channelMessageArgs.Message.ToLower() == "up") {
-			cBuff.Input(0,channelMessageArgs.From);
-		}
-		else if (channelMessageArgs.Message.ToLower() == "down") {
-			cBuff.Input(1,channelMessageArgs.From);
-		}
-		else if (channelMessageArgs.Message.ToLower() == "left") {
-			cBuff.Input(2,channelMessageArgs.From);
-		}
-		else if (channelMessageArgs.Message.ToLower() == "right") {
-			cBuff.Input(3,channelMessageArgs.From);
-		}
-		else if (channelMessageArgs.Message.ToLower() == "fire") {
-			cBuff.Input(4,channelMessageArgs.From);
-		}
+        ChatText.GetComponentInParent<ScrollRect>()
+            .GetComponent<ScrollRect>()
+                .verticalNormalizedPosition = 0f;
+        if (channelMessageArgs.Message.ToLower() == "up") {
+            cBuff.Input(0, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "down") {
+            cBuff.Input(1, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "left") {
+            cBuff.Input(2, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "right") {
+            cBuff.Input(3, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "fire") {
+            cBuff.Input(4, channelMessageArgs.From);
+        }
         else if (channelMessageArgs.Message == "Kappa") {
-			cBuff.Input(5,channelMessageArgs.From);
+            cBuff.Input(5, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "black") {
+            cBuff.Color(Color.black, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "blue") {
+            cBuff.Color(Color.blue, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "clear") {
+            cBuff.Color(Color.clear, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "cyan") {
+            cBuff.Color(Color.cyan, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "gray") {
+            cBuff.Color(Color.gray, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "green") {
+            cBuff.Color(Color.green, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "grey") {
+            cBuff.Color(Color.grey, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "magenta") {
+            cBuff.Color(Color.magenta, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "red") {
+            cBuff.Color(Color.red, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "white") {
+            cBuff.Color(Color.white, channelMessageArgs.From);
+        }
+        else if (channelMessageArgs.Message.ToLower() == "yellow") {
+            cBuff.Color(Color.yellow, channelMessageArgs.From);
         }
     }
 
-    //Get the name of the user who joined to channel 
-    void OnUserJoined(UserJoinedEventArgs userJoinedArgs)
+        //Get the name of the user who joined to channel 
+        void OnUserJoined(UserJoinedEventArgs userJoinedArgs)
     {
         //ChatText.text += "<b>" + "USER JOINED" + ":</b> " + userJoinedArgs.User + "\n";
         Debug.Log("USER JOINED: " + userJoinedArgs.User);
@@ -107,6 +140,13 @@ public class TwitchIrcExample : MonoBehaviour
     private void OnExceptionThrown(Exception exeption)
     {
         Debug.Log(exeption);
+    }
+
+    public void ChangeChannel()
+    {
+        TwitchIrc.Instance.Disconnect();
+        TwitchIrc.Instance.Channel = ChannelText.text;
+        TwitchIrc.Instance.Connect();
     }
 
 }
