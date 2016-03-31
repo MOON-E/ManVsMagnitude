@@ -120,6 +120,7 @@ public class GridNode : MonoBehaviour {
 
     public void Ignite()
     {
+        if (onFire) return;
         onFire = true;
         fireParticle = Instantiate(Resources.Load("Particles/FirePrefab"), transform.position, transform.rotation) as GameObject;
         Instantiate(Resources.Load("Audio/PanicingCivilianSound"), transform.position, Quaternion.identity);
@@ -147,7 +148,8 @@ public class GridNode : MonoBehaviour {
 
     IEnumerator FireSpread()
     {
-        yield return new WaitForSeconds(10f);
-        if (onFire) gm.Panic();
+        yield return new WaitForSeconds(5f);
+        if (onFire)
+            gm.Panic();
     }
 }

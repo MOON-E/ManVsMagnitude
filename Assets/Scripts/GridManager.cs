@@ -13,12 +13,17 @@ public class GridManager : MonoBehaviour {
 	public GameObject MonsterWinCanvas;
 	public GameObject monsterWinSound;
 
+    System.Random rand;
+
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.R) && currState == state.MONSTERWON)
 			Application.LoadLevel (0);
 	}
 
 	void Awake () {
+
+        rand = new System.Random();
+
 	    foreach (Transform child in transform) {            //Get all the grid nodes and store them in array
             int x, y;
             Vector3 holder = child.transform.position;
@@ -59,6 +64,13 @@ public class GridManager : MonoBehaviour {
 		return true;
     }
 
+    public void FireBreath(int x, int y)
+    {
+        if (!GridBounds(x, y)) return;
+        grid[x, y].DestroyBuilding();
+        grid[x, y].Ignite();
+    }
+
     bool GridBounds(int x, int y)                           //returns false if node (x, y) is beyond grid limits
     {
         if (x < 0) return false;
@@ -78,7 +90,6 @@ public class GridManager : MonoBehaviour {
 
     public void Panic()
     {
-        System.Random rand = new System.Random();
         int x = rand.Next(10);
         int y = rand.Next(10);
         grid[x, y].Ignite();

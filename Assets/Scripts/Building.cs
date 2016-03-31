@@ -15,12 +15,16 @@ public class Building : MonoBehaviour {
 
     GridNode location = null;
 
+    Renderer rend;              //to change color
+
 	// Use this for initialization
 	public void Start () {
         mCollider = GetComponent<BoxCollider>();
         mBuildState = BuildState.BUILDING;
         gameObject.layer = 2; // Ignore raycasts while in Pre-build state
         timeUntilBuilt = mBuildTime;
+
+        rend = gameObject.GetComponent<Renderer>();
        
         /*Color color = GetComponent<MeshRenderer>().material.color;
         color.a = 0.5f;
@@ -35,6 +39,11 @@ public class Building : MonoBehaviour {
                 // While in this state, player is deciding whether or not to build, player will manually change state to BUILDING when needed
                 break;
             case (BuildState.BUILDING):
+
+                float c = (timeUntilBuilt / mBuildTime);
+
+                rend.material.color = Color.Lerp(Color.yellow, Color.red, c);
+
                 Debug.Log("Building " + (mBuildTime-timeUntilBuilt).ToString() + "/" + (mBuildTime).ToString());
                 Build(Time.deltaTime);
                 break;
@@ -68,7 +77,7 @@ public class Building : MonoBehaviour {
             bc.isTrigger = false; // enable collisions with this building
             gameObject.layer = 0;
         }
-        GetComponent<MeshRenderer>().material.color = Color.yellow;
+        rend.material.color = Color.yellow;
 
         location = loc;
     }
@@ -80,7 +89,7 @@ public class Building : MonoBehaviour {
         if (timeUntilBuilt <= float.Epsilon)
         {
             mBuildState = BuildState.COMPLETED;
-            GetComponent<MeshRenderer>().material.color = Color.green;
+            rend.material.color = Color.green;
 
             /*Color color = GetComponent<MeshRenderer>().material.color;
             color.a = 1f;

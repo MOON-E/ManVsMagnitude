@@ -97,6 +97,7 @@ public class TwitchIrcExample : MonoBehaviour
         else if (channelMessageArgs.Message == "panicBasket") {
             if (panicCD) {
                 cBuff.monster.gm.Panic();
+                cBuff.monster.gm.Panic();
                 panicCD = false;
                 StartCoroutine(PanicWait());
             }
@@ -172,7 +173,7 @@ public class TwitchIrcExample : MonoBehaviour
 
     IEnumerator PanicWait()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         panicCD = true;
     }
 }

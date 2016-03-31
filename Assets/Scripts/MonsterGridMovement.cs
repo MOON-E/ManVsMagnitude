@@ -182,7 +182,7 @@ public class MonsterGridMovement : MonoBehaviour
         Instantiate(Resources.Load("Particles/FireBreathPrefab"), fireBreathPosition, transform.rotation);
 
         foreach (GridNode node in fireRange) {
-            if(node!=null) gm.Smash(node.x,node.y);
+            if(node!=null) gm.FireBreath(node.x,node.y);
         }
 
 
