@@ -172,7 +172,7 @@ public class TwitchIrcExample : MonoBehaviour
 
     IEnumerator PanicWait()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         panicCD = true;
     }
 }
