@@ -99,6 +99,7 @@ public class TwitchIrcExample : MonoBehaviour
                 cBuff.monster.gm.Panic();
                 panicCD = false;
                 StartCoroutine(PanicWait());
+				cBuff.alert(6, channelMessageArgs.From);
             }
         }
         else if (channelMessageArgs.Message.ToLower() == "black") {
