@@ -46,7 +46,7 @@ public class Tank : Unit {
 	public override void Select(bool select)
 	{
 		base.Select (select);
-
+		if (!GameObject.Find("SelectionsSound") && select) Instantiate (tankSelectinon);
 	}
 
 

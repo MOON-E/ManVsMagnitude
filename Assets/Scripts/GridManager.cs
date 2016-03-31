@@ -8,8 +8,10 @@ public class GridManager : MonoBehaviour {
     public int gridWidth, gridHeight;
     GridNode[,] grid = new GridNode[10,10];
 	public int numBases = 2;
+
 	public GameObject UICanvas;
 	public GameObject MonsterWinCanvas;
+	public GameObject monsterWinSound;
 
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.R) && currState == state.MONSTERWON)
@@ -68,6 +70,7 @@ public class GridManager : MonoBehaviour {
     }
 
 	void MonsterWins() {
+		Instantiate (monsterWinSound);
 		UICanvas.SetActive (false);
 		MonsterWinCanvas.SetActive (true);
 		currState = state.MONSTERWON;

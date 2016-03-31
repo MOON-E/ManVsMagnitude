@@ -8,6 +8,8 @@ public class MissileBlast : MonoBehaviour {
     float blastRadius = 15;
     Renderer rend;
 
+	public GameObject missileExplode;
+
     // Use this for initialization
     void Start () {
         timeUntilBlast = mBlastTime;
@@ -23,6 +25,7 @@ public class MissileBlast : MonoBehaviour {
         MonsterGridMovement monster = null;
 
         if (timeUntilBlast <= float.Epsilon) {
+			Instantiate(missileExplode);
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, blastRadius);
             foreach (Collider c in hitColliders) {
                 if (c.gameObject.GetComponent<MonsterGridMovement>()) monster = c.gameObject.GetComponent<MonsterGridMovement>();
