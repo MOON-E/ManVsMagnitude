@@ -68,19 +68,19 @@ public class TwitchIrcExample : MonoBehaviour
 		ChatText.GetComponentInParent<ScrollRect>()
 			.GetComponent<ScrollRect>()
 				.verticalNormalizedPosition = 0f;
-		if (channelMessageArgs.Message == "!up") {
+		if (channelMessageArgs.Message.ToLower() == "up") {
 			cBuff.Input(0,channelMessageArgs.From);
 		}
-		else if (channelMessageArgs.Message == "!down") {
+		else if (channelMessageArgs.Message.ToLower() == "down") {
 			cBuff.Input(1,channelMessageArgs.From);
 		}
-		else if (channelMessageArgs.Message == "!left") {
+		else if (channelMessageArgs.Message.ToLower() == "left") {
 			cBuff.Input(2,channelMessageArgs.From);
 		}
-		else if (channelMessageArgs.Message == "!right") {
+		else if (channelMessageArgs.Message.ToLower() == "right") {
 			cBuff.Input(3,channelMessageArgs.From);
 		}
-		else if (channelMessageArgs.Message == "!fire") {
+		else if (channelMessageArgs.Message.ToLower() == "fire") {
 			cBuff.Input(4,channelMessageArgs.From);
 		}
         else if (channelMessageArgs.Message == "Kappa") {
