@@ -75,4 +75,12 @@ public class GridManager : MonoBehaviour {
 		MonsterWinCanvas.SetActive (true);
 		currState = state.MONSTERWON;
 	}
+
+    public void Panic()
+    {
+        System.Random rand = new System.Random();
+        int x = rand.Next(10);
+        int y = rand.Next(10);
+        grid[x, y].Ignite();
+    }
 }

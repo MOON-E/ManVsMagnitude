@@ -15,6 +15,8 @@ public class CommandBuffer : MonoBehaviour {
 	public GameObject preFabAlert;
 	public GameObject fireBreathSound;
 
+    public InputField scaleInput;
+
 	public void Input(int i, string name) {
         if (i == 4) {
             specialBuffer++;
@@ -47,6 +49,17 @@ public class CommandBuffer : MonoBehaviour {
     public void Color(Color c, string name)
     {
         monster.gameObject.GetComponent<Renderer>().material.color = c;
+        monster.head.GetComponent<Renderer>().material.color = c;
+    }
+
+    public void Scale()
+    {
+        int x = int.Parse(scaleInput.text);
+
+        if(x > 0) {
+            threshold = (int.Parse(scaleInput.text));
+            specialThreshold = 5 * (int.Parse(scaleInput.text));
+        }
     }
 
 	void alert(int i, string name) {

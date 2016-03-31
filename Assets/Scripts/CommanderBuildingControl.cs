@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 // Script that handles player placing buildings
 /* Pseudocode:
@@ -29,6 +30,8 @@ public class CommanderBuildingControl : MonoBehaviour {
 	private float missileTowerProductionCharge;
 	bool missileTowerReady = true;
 
+    public Button[] buttons;
+
     Building mBuildingGhost = null; // reference to "ghost" building you plan to build
     List<Building> mBuildings = new List<Building>();
 
@@ -39,9 +42,8 @@ public class CommanderBuildingControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!barrierReady) {
+        if (!barrierReady) {
 			barrierProductionCharge += Time.deltaTime;
-			//Debug.Log("Building Tank " + currCharge + " / " + barrierProductionTime);
 			if (barrierProductionCharge >= barrierCooldownTime) {
 				barrierReady = true;
 				barrierProductionCharge = 0;
@@ -49,7 +51,6 @@ public class CommanderBuildingControl : MonoBehaviour {
 		}
 		if (!pylonReady) {
 			pylonProductionCharge += Time.deltaTime;
-			//Debug.Log("Building Tank " + currCharge + " / " + barrierProductionTime);
 			if (pylonProductionCharge >= pylonCooldownTime) {
 				pylonReady = true;
 				pylonProductionCharge = 0;
@@ -57,20 +58,26 @@ public class CommanderBuildingControl : MonoBehaviour {
 		}
 		if (!factoryReady) {
 			factoryProductionCharge += Time.deltaTime;
-			//Debug.Log("Building Tank " + currCharge + " / " + barrierProductionTime);
-			if (factoryProductionCharge >= factoryCooldownTime) {
+            if (factoryProductionCharge >= factoryCooldownTime) {
 				factoryReady = true;
 				factoryProductionCharge = 0;
 			}
 		}
 		if (!missileTowerReady) {
 			missileTowerProductionCharge += Time.deltaTime;
-			//Debug.Log("Building Tank " + currCharge + " / " + barrierProductionTime);
-			if (missileTowerProductionCharge >= missileTowerCooldownTime) {
+            if (missileTowerProductionCharge >= missileTowerCooldownTime) {
 				missileTowerReady = true;
 				missileTowerProductionCharge = 0;
 			}
 		}
+
+        //Button greay out
+        buttons[0].interactable = barrierReady;
+        buttons[1].interactable = pylonReady;
+        buttons[2].interactable = factoryReady;
+        buttons[3].interactable = missileTowerReady;
+    
+
         if (Input.GetKeyDown(KeyCode.Mouse1)&&!missileTargeting)
 			UnqueueBuilding();
         if (Input.GetKeyDown (KeyCode.B) && barrierReady) {
@@ -185,10 +192,6 @@ public class CommanderBuildingControl : MonoBehaviour {
     void OnGUI()
     {
         if (missileTargeting) {
-            //Texture2D texture = new Texture2D(1, 1);
-            //texture.SetPixel(0, 0, new Color(1f, 0f, 0f, .5f));
-            //texture.Apply();
-            //GUI.skin.box.normal.background = texture;
             GUI.DrawTexture(new Rect(Input.mousePosition.x - 50, (-Input.mousePosition.y - 50)+Screen.height, 100, 100),
                 Resources.Load("Images/MissileCircle") as Texture);
         }

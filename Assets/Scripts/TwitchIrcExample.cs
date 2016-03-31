@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Irc;
 using UnityEngine;
@@ -13,6 +14,9 @@ public class TwitchIrcExample : MonoBehaviour
     public Text ChatText;
     public InputField MessageText;
 	public CommandBuffer cBuff;
+
+    bool kappaCD = true;
+    bool panicCD = true;
 
     void Start()
     {
@@ -84,7 +88,18 @@ public class TwitchIrcExample : MonoBehaviour
             cBuff.Input(4, channelMessageArgs.From);
         }
         else if (channelMessageArgs.Message == "Kappa") {
-            cBuff.Input(5, channelMessageArgs.From);
+            if (kappaCD) {
+                cBuff.Input(5, channelMessageArgs.From);
+                kappaCD = false;
+                StartCoroutine(KappaWait());
+            }
+        }
+        else if (channelMessageArgs.Message == "panicBasket") {
+            if (panicCD) {
+                cBuff.monster.gm.Panic();
+                panicCD = false;
+                StartCoroutine(PanicWait());
+            }
         }
         else if (channelMessageArgs.Message.ToLower() == "black") {
             cBuff.Color(Color.black, channelMessageArgs.From);
@@ -148,5 +163,16 @@ public class TwitchIrcExample : MonoBehaviour
         TwitchIrc.Instance.Channel = ChannelText.text;
         TwitchIrc.Instance.Connect();
     }
+    
+    IEnumerator KappaWait()
+    {
+        yield return new WaitForSeconds(5);
+        kappaCD = true;
+    }
 
+    IEnumerator PanicWait()
+    {
+        yield return new WaitForSeconds(5);
+        panicCD = true;
+    }
 }

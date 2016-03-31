@@ -16,8 +16,8 @@ public class GridNode : MonoBehaviour {
 
     bool hovering; //for hover select
 
-    public bool onFire;
-
+    public bool onFire;     //for panic
+    GameObject fireParticle;
 
     //AudioSource variables for sound
     public AudioSource buildingBuild;
@@ -27,7 +27,7 @@ public class GridNode : MonoBehaviour {
         
         gm = GetComponentInParent<GridManager>();
         rend = GetComponent<Renderer>();
-        
+
         if (startBase) {
             building = Instantiate(Resources.Load("Prefabs/PlayerBase", typeof(Building)), transform.position, transform.rotation) as Building;
             int range = building.pylonRange;
@@ -43,7 +43,7 @@ public class GridNode : MonoBehaviour {
     void Update () {
         //if (hovering) rend.material.color = Color.blue;
         if (buildStatus <= 0) rend.material.color = Color.white;
-        else rend.material.color = new Color(.5f, .5f, 1f);
+        else rend.material.color = new Color(.2f, .2f, 1f);
     }
 
     public void Build(Building new_building)
@@ -110,6 +110,7 @@ public class GridNode : MonoBehaviour {
 
     public bool CanBuildHere()
     {
+        if (onFire) return false;
         if((buildStatus > 0) && (building == null)) {
             return true;
         }
@@ -117,16 +118,36 @@ public class GridNode : MonoBehaviour {
         return false;
     }
 
+    public void Ignite()
+    {
+        onFire = true;
+        fireParticle = Instantiate(Resources.Load("Particles/FirePrefab"), transform.position, transform.rotation) as GameObject;
+        Instantiate(Resources.Load("Audio/PanicingCivilianSound"), transform.position, Quaternion.identity);
+        StartCoroutine(FireSpread());
+    }
+
+    public void Extinguish()
+    {
+        Destroy(fireParticle);
+        onFire = false;
+    }
+
     void OnMouseDown()
     {
-		//Debug.Log ("clicked a building node");
+        Extinguish();
+
         if (building is Missile) {
 			Missile m = building as Missile;
 			m.launch ();
 		} 
 		if (building is Factory) {
-			//Debug.Log("It's a factory");
 			((Factory)building).StartBuilding();
 		}
+    }
+
+    IEnumerator FireSpread()
+    {
+        yield return new WaitForSeconds(10f);
+        if (onFire) gm.Panic();
     }
 }

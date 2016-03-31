@@ -26,6 +26,8 @@ public class MonsterGridMovement : MonoBehaviour
 
     public AudioSource tankDeath;       //tank death sound cause screw you arrays
 
+    public GameObject head;             //for color change
+
 	public GameObject PlayerWinCanvas;
 	public GameObject UICanvas;
 	public GameObject playerWinSound;
