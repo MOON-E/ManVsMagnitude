@@ -50,6 +50,7 @@ public class CommandBuffer : MonoBehaviour {
     {
         monster.gameObject.GetComponent<Renderer>().material.color = c;
         monster.head.GetComponent<Renderer>().material.color = c;
+		alert(c,name);
     }
 
     public void Scale()
@@ -62,16 +63,27 @@ public class CommandBuffer : MonoBehaviour {
         }
     }
 
-	void alert(int i, string name) {
+	public void alert(int i, string name) {
 		GameObject panel = GameObject.Find ("MainPanel");
 		if (panel != null) {
 			GameObject a = (GameObject)Instantiate (preFabAlert);
-			if (i <= 3) {
+			if (i>= 0 && i <= 3) {
 				a.GetComponent<Text>().text = name + " moved the Monster!";
 			}
-			else {
+			else if (i==4) {
 				a.GetComponent<Text>().text = name + " activated the Special Attack!";
+			} else if (i==6) {
+				a.GetComponent<Text>().text = name + " spreads panic!";
 			}
+			a.transform.SetParent (panel.transform, false);
+		}
+	}
+
+	public void alert(Color c, string name) {
+		GameObject panel = GameObject.Find ("MainPanel");
+		if (panel != null) {
+			GameObject a = (GameObject)Instantiate (preFabAlert);
+			a.GetComponent<Text>().text = name + " changed the monster's color!";
 			a.transform.SetParent (panel.transform, false);
 		}
 	}
