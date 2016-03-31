@@ -10,13 +10,11 @@ public class Missile : Building {
     void Start()
     {
         base.Start();
-        ready = true;
     }
 
 	void Update() {
 		base.Update ();
 		if (mBuildState == BuildState.COMPLETED) {
-			isAFactory = true;
 			ready = true;
 		}
 		if (!ready) {
