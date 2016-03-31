@@ -15,11 +15,6 @@ public class Factory : Building{
 
 	public GameObject buildSound;
 	public GameObject startBuildSound;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {

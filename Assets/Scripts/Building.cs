@@ -18,7 +18,7 @@ public class Building : MonoBehaviour {
 	// Use this for initialization
 	public void Start () {
         mCollider = GetComponent<BoxCollider>();
-        mBuildState = BuildState.PREBUILD;
+        mBuildState = BuildState.BUILDING;
         gameObject.layer = 2; // Ignore raycasts while in Pre-build state
         timeUntilBuilt = mBuildTime;
        
