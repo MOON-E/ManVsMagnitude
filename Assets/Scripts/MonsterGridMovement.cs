@@ -28,7 +28,7 @@ public class MonsterGridMovement : MonoBehaviour
 
 	public GameObject PlayerWinCanvas;
 	public GameObject UICanvas;
-
+	public GameObject playerWinSound;
 
     void Start()
     {
@@ -191,6 +191,7 @@ public class MonsterGridMovement : MonoBehaviour
 		healthSlider.value -= dmg;
 		if (healthSlider.value <= 0) {
 			currstate = state.PLAYERWON;
+			Instantiate(playerWinSound);
 			UICanvas.SetActive (false);
 			PlayerWinCanvas.SetActive (true);
 		}

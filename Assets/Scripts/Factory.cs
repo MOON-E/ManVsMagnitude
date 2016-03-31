@@ -7,6 +7,8 @@ public class Factory : Building{
 	public Unit tankPrefab;
 	private Unit tankHolder;
 
+	public GameObject buildSound;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -21,10 +23,8 @@ public class Factory : Building{
 	}
 
 	public void StartBuilding() {
-		//Debug.Log ("memes");
-		if (isAFactory == true) {
-			tankHolder = Instantiate(tankPrefab, new Vector3((float)(transform.position.x), (float)transform.position.y, transform.position.z-1), transform.rotation) as Unit;
-			Camera.main.GetComponent<CommanderUnitControl>().units.Add(tankHolder);
-		}
+		Instantiate (buildSound);
+		tankHolder = Instantiate(tankPrefab, new Vector3((float)(transform.position.x), (float)transform.position.y, transform.position.z-1), transform.rotation) as Unit;
+		Camera.main.GetComponent<CommanderUnitControl>().units.Add(tankHolder);
 	}
 }

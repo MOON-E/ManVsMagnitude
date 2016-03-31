@@ -13,6 +13,7 @@ public class CommandBuffer : MonoBehaviour {
     public Slider[] uiSliders = new Slider[5];
 
 	public GameObject preFabAlert;
+	public GameObject fireBreathSound;
 
 	public void Input(int i, string name) {
         if (i == 4) {
@@ -21,6 +22,7 @@ public class CommandBuffer : MonoBehaviour {
                 monster.Command(i);
                 specialBuffer = 0;
 				alert(i,name);
+				Instantiate(fireBreathSound);
             }
 
             uiSliders[i].value = specialBuffer;
