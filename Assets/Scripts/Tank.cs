@@ -104,4 +104,16 @@ public class Tank : Unit {
         }
         return false;
     }
+
+    public bool CanMove()
+    {
+        if (mFireState == FireState.MOVING)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
