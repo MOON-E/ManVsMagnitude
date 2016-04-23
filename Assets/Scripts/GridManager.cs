@@ -82,7 +82,10 @@ public class GridManager : MonoBehaviour {
     }
 
 	void MonsterWins() {
-		Instantiate (monsterWinSound);
+        if (currState != state.MONSTERWON)
+        {
+            Instantiate(monsterWinSound);
+        }
 		UICanvas.SetActive (false);
 		MonsterWinCanvas.SetActive (true);
 		currState = state.MONSTERWON;

@@ -49,6 +49,11 @@ public class MonsterGridMovement : MonoBehaviour
         }
 		if (Input.GetKeyDown(KeyCode.R) && currstate == state.PLAYERWON)
 			Application.LoadLevel (0);
+        // Testing:
+       /* if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(1000000);       
+        }*/
     }
 
     public void Command(int i)
@@ -192,8 +197,11 @@ public class MonsterGridMovement : MonoBehaviour
     {
 		healthSlider.value -= dmg;
 		if (healthSlider.value <= 0) {
+            if (currstate != state.PLAYERWON)
+            {
+                Instantiate(playerWinSound);
+            }
 			currstate = state.PLAYERWON;
-			Instantiate(playerWinSound);
 			UICanvas.SetActive (false);
 			PlayerWinCanvas.SetActive (true);
 		}
