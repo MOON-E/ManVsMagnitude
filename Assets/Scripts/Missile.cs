@@ -11,14 +11,10 @@ public class Missile : Building {
 
 	void Update() {
 		base.Update ();
-		if (mBuildState == BuildState.COMPLETED) {
-			ready = true;
-		}
-		if (!ready && mstate == state.CHARGING) {
+		if (mstate == state.CHARGING) {
 			currCharge += Time.deltaTime;
 			if (currCharge >= chargeTime) {
 				GetComponent<MeshRenderer>().material.color = Color.green;
-				ready = true;
 				currCharge = 0;
 				mstate = state.READY;
 			}
@@ -27,13 +23,12 @@ public class Missile : Building {
 
     public void launch()
     {
-        if (!ready || mstate == state.CHARGING) return;
+        if (mstate != state.READY) return;
 
         Camera.main.GetComponent<CommanderBuildingControl>().MissileLaunch();
 
         Debug.Log("missile click");
 		GetComponent<MeshRenderer>().material.color = Color.red;
-		ready = false;
 		mstate = state.CHARGING;
     }
 }

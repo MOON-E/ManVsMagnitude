@@ -37,6 +37,8 @@ public class CommanderUnitControl : MonoBehaviour {
 	void Update () {
         Vector3 mousePosWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 13f));
 
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+
         if (Input.GetMouseButtonDown(0))
         {
             LeftClick(mousePosWorld);

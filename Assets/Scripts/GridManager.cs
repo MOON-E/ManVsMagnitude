@@ -67,8 +67,10 @@ public class GridManager : MonoBehaviour {
     public void FireBreath(int x, int y)
     {
         if (!GridBounds(x, y)) return;
-        grid[x, y].DestroyBuilding();
+        if (grid[x, y].DestroyBuilding()) numBases--;
         grid[x, y].Ignite();
+        if (numBases == 0)
+            MonsterWins();
     }
 
     bool GridBounds(int x, int y)                           //returns false if node (x, y) is beyond grid limits

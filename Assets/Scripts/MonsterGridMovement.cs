@@ -32,6 +32,8 @@ public class MonsterGridMovement : MonoBehaviour
 	public GameObject UICanvas;
 	public GameObject playerWinSound;
 
+    public NavMeshObstacle nmo;
+
     void Start()
     {
         transform.position = startPoint = endPoint = gm.Find(x, y);
@@ -41,13 +43,16 @@ public class MonsterGridMovement : MonoBehaviour
 
     void Update()
     {
-        if(transform.position != endPoint) {
+        if (transform.position != endPoint) {
             float moveCompletion = (Time.time - startTime) / stepSpeed;
             if (moveCompletion < 1) {
+                nmo.size = new Vector3(0, 0, 0);
                 transform.position = Vector3.Lerp(startPoint, endPoint, moveCompletion);
             }
+            else
+                nmo.size = new Vector3(1, 2, 1);
         }
-		if (Input.GetKeyDown(KeyCode.R) && currstate == state.PLAYERWON)
+        if (Input.GetKeyDown(KeyCode.R) && currstate == state.PLAYERWON)
 			Application.LoadLevel (0);
     }
 

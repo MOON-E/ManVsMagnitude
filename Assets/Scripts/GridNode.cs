@@ -148,7 +148,7 @@ public class GridNode : MonoBehaviour {
 
     IEnumerator FireSpread()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
         if (onFire)
             gm.Panic();
     }
