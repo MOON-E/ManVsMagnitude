@@ -29,14 +29,8 @@ public class GridNode : MonoBehaviour {
         rend = GetComponent<Renderer>();
 
         if (startBase) {
-            building = Instantiate(Resources.Load("Prefabs/PlayerBase", typeof(Building)), transform.position, transform.rotation) as Building;
-            int range = building.pylonRange;
-            for (int xi = -1*range; xi <= range; xi++) {
-                for (int yi = -1*range; yi <= range; yi++) {
-                    try {gm.FindNode(x+xi, y+yi).buildStatus += 1;}
-                    catch {}
-                }
-            }
+            building = Instantiate(Resources.Load("Prefabs/PlayerBase", typeof(Pylon)), transform.position, transform.rotation) as Pylon;
+			building.StartBuild (this);
         }
     }
 
@@ -56,18 +50,24 @@ public class GridNode : MonoBehaviour {
 
     public void Activate()
     {
-        int range = building.pylonRange;
-        for (int xi = -1*range; xi <= range; xi++) {
-            for (int yi = -1*range; yi <= range; yi++) {
-                try {gm.FindNode(x+xi, y+yi).buildStatus += 1;}
-                catch {}
-            }
-        }
+		if (BuildingExistsAndComplete()) {
+			Pylon p = building as Pylon;
+			if (p != null) { 
+				int range = p.pylonRange;
+				for (int xi = -1 * range; xi <= range; xi++) {
+					for (int yi = -1 * range; yi <= range; yi++) {
+						try {
+							gm.FindNode (x + xi, y + yi).buildStatus += 1;
+						} catch {
+						}
+					}
+				}
+			}
+		}
     }
 
     public bool Destroy()
     {
-		
         Instantiate(buildingDestroyed);
 		bool r = DestroyBuilding ();
         Instantiate(Resources.Load("Particles/Demolish Particles"), transform.position, Quaternion.Euler(-90, 0, 0));
@@ -75,13 +75,16 @@ public class GridNode : MonoBehaviour {
 		return r;
     }
 
-	public bool DestroyBuilding() { //returnss if the destroyed building was a base
-		if (building != null) {
-			int range = building.pylonRange;
-			for (int xi = -1*range; xi <= range; xi++) {
-				for (int yi = -1*range; yi <= range; yi++) {
-					try {gm.FindNode(x+xi, y+yi).buildStatus -= 1;}
-					catch {}
+	public bool DestroyBuilding() { //returns true if the destroyed building was a base
+		if (BuildingExistsAndComplete()) {
+			Pylon p = building as Pylon;
+			if (p != null) { 
+				int range = p.pylonRange;
+				for (int xi = -1*range; xi <= range; xi++) {
+					for (int yi = -1*range; yi <= range; yi++) {
+						try {gm.FindNode(x+xi, y+yi).buildStatus -= 1;}
+						catch {}
+					}
 				}
 			}
 			Destroy(building.gameObject);
@@ -91,8 +94,7 @@ public class GridNode : MonoBehaviour {
 	}
 
 	public bool HasBarrier() {
-		if (building != null)
-			if (building.isABarrier)
+		if (BuildingExistsAndComplete() && building is Barrier)
 				return true;
 		return false;
 	}
@@ -117,6 +119,12 @@ public class GridNode : MonoBehaviour {
 
         return false;
     }
+
+	public bool BuildingExistsAndComplete() {
+		if (building != null && building.Completed ())
+			return true;
+		return false;
+	}
 
     public void Ignite()
     {
