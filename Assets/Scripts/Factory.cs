@@ -17,7 +17,7 @@ public class Factory : Building{
 	public GameObject startBuildSound;
 	
 	// Update is called once per frame
-	void Update () {
+	new void Update () {
 		base.Update();
 		if (mBuildState == BuildState.COMPLETED) {
 			finishedBuilding = true;

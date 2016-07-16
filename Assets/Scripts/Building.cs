@@ -4,14 +4,11 @@ using System.Collections;
 public class Building : MonoBehaviour {
     protected enum BuildState{PREBUILD, BUILDING, PAUSED, COMPLETED, DAMAGED};
 
-    protected BuildState mBuildState;
+    protected BuildState mBuildState = BuildState.PREBUILD;
     BoxCollider mCollider;
     public float mBuildTime = 10;
     float timeUntilBuilt;
     public int collCounter = 0;
-    public int pylonRange;
-    public bool isABarrier = false;
-	public bool isAFactory = false;
 
     GridNode location = null;
 
@@ -20,7 +17,6 @@ public class Building : MonoBehaviour {
 	// Use this for initialization
 	public void Start () {
         mCollider = GetComponent<BoxCollider>();
-        mBuildState = BuildState.BUILDING;
         gameObject.layer = 2; // Ignore raycasts while in Pre-build state
         timeUntilBuilt = mBuildTime;
 
@@ -38,10 +34,10 @@ public class Building : MonoBehaviour {
             case (BuildState.PREBUILD):
                 // While in this state, player is deciding whether or not to build, player will manually change state to BUILDING when needed
                 break;
-            case (BuildState.BUILDING):
+			case (BuildState.BUILDING):
 
-                float c = (timeUntilBuilt / mBuildTime);
-
+				float c = (timeUntilBuilt / mBuildTime);
+				
                 rend.material.color = Color.Lerp(Color.yellow, Color.red, c);
 
                 Debug.Log("Building " + (mBuildTime-timeUntilBuilt).ToString() + "/" + (mBuildTime).ToString());
@@ -77,7 +73,7 @@ public class Building : MonoBehaviour {
             bc.isTrigger = false; // enable collisions with this building
             gameObject.layer = 0;
         }
-        rend.material.color = Color.yellow;
+        //rend.material.color = Color.yellow;
 
         location = loc;
     }
@@ -88,9 +84,9 @@ public class Building : MonoBehaviour {
         timeUntilBuilt -= deltaTime;
         if (timeUntilBuilt <= float.Epsilon)
         {
-            mBuildState = BuildState.COMPLETED;
-            rend.material.color = Color.green;
-
+			mBuildState = BuildState.COMPLETED;
+			rend.material.color = Color.green;
+            
             /*Color color = GetComponent<MeshRenderer>().material.color;
             color.a = 1f;
             GetComponent<MeshRenderer>().material.color = color;*/
@@ -129,5 +125,8 @@ public class Building : MonoBehaviour {
             collCounter = 1;
         }
     }
-   
+
+	public bool Completed() {
+		return (mBuildState == BuildState.COMPLETED);
+	}
 }
