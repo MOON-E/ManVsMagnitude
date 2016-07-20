@@ -50,12 +50,7 @@ public class CameraControl : MonoBehaviour {
 
         else if (scroll > 0)
         {
-<<<<<<< HEAD
             newZoom = (float).8*Mathf.Lerp(newZoom, minHeight, Time.deltaTime * Mathf.Abs((newZoom - minHeight) / (minHeight - maxHeight)));
-=======
-            newZoom = Mathf.Lerp(newZoom, minHeight, Time.deltaTime * zoomSpeed);
-            Mathf.Clamp(newZoom, minHeight, maxHeight);
->>>>>>> dbbbcc0630a3ac2c2ff6f4f597242da4307af692
         }
         cam.transform.position = new Vector3(cam.transform.position.x, newZoom, cam.transform.position.z);
         
