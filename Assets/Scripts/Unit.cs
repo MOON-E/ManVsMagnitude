@@ -32,9 +32,7 @@ public class Unit : MonoBehaviour {
 	
 	// Update is called once per frame
 	protected void Update () {
-        //if (isMoving)
-        //{
-        //    Vector3 toEnd = destination - transform.position;
+        
 
 	}
 
@@ -57,6 +55,11 @@ public class Unit : MonoBehaviour {
     public Vector2 ScreenPosition()
     {
         return Camera.main.WorldToScreenPoint(transform.position);
+    }
+
+    virtual public void HandleHotkeyInput()
+    {
+
     }
 
     //void OnDestroy()

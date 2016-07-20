@@ -96,6 +96,20 @@ public class Tank : Unit {
         Debug.Log("canmove");
     }
 
+    public override void HandleHotkeyInput()
+    {
+        if (this.isSelected)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) this.ToFireMode();
+            if (Input.GetKeyDown(KeyCode.Alpha2)) this.ToMoveMode();
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                if (this.CanMove()) { this.ToFireMode(); }
+                else { this.ToMoveMode(); }
+            }
+        }
+    }
+
     bool checkMonsterRange()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);

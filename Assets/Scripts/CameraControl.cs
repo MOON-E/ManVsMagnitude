@@ -6,9 +6,10 @@ public class CameraControl : MonoBehaviour {
     public float cameraYSpeed = 0.5f;
     public float cameraXSpeed = 0.5f;
     public float zoomSpeed = 100.0f;
-    public float minHeight = 15.0f;
-    public float maxHeight = 90.0f;
+    float minHeight = 15.0f;
+    float maxHeight = 90.0f;
     public float FOV = 0.0f;
+    private Vector3 vel = Vector3.zero;
 	// Use this for initialization
 	void Start () {
 	    cam = GetComponent<Camera>();
@@ -42,14 +43,21 @@ public class CameraControl : MonoBehaviour {
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         float newZoom = cam.transform.position.y;
-        //newZoom -= scroll * zoomSpeed;
-        if (scroll < 0)
-            newZoom = Mathf.Lerp(newZoom, maxHeight, Time.deltaTime * Mathf.Abs((newZoom - maxHeight) / (minHeight - maxHeight)));
+       if (scroll < 0){
+            newZoom = Mathf.Lerp(newZoom, maxHeight, Time.deltaTime * zoomSpeed);
+            Mathf.Clamp(newZoom, minHeight, maxHeight);
+        }
+
         else if (scroll > 0)
         {
+<<<<<<< HEAD
             newZoom = (float).8*Mathf.Lerp(newZoom, minHeight, Time.deltaTime * Mathf.Abs((newZoom - minHeight) / (minHeight - maxHeight)));
+=======
+            newZoom = Mathf.Lerp(newZoom, minHeight, Time.deltaTime * zoomSpeed);
+            Mathf.Clamp(newZoom, minHeight, maxHeight);
+>>>>>>> dbbbcc0630a3ac2c2ff6f4f597242da4307af692
         }
-        Mathf.Clamp(newZoom, minHeight, maxHeight);
         cam.transform.position = new Vector3(cam.transform.position.x, newZoom, cam.transform.position.z);
+        
     }
 }

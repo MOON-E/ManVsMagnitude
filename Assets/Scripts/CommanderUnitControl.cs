@@ -72,6 +72,12 @@ public class CommanderUnitControl : MonoBehaviour {
                 }
             }
         }
+        
+        if (selectedUnits.Count > 0){
+            foreach (Unit unit in selectedUnits){
+                unit.HandleHotkeyInput();
+            }
+        }
     }
 
     void LeftClick(Vector3 mousePosWorld)
