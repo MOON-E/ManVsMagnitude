@@ -18,6 +18,22 @@ public class TwitchIrcExample : MonoBehaviour
     bool kappaCD = true;
     bool panicCD = true;
 
+    /// <summary>
+    ///  List of users present in the chat room at any point during this session of gameplay. 
+    ///  Temporarily public for ease of debugging.
+    /// </summary>
+    public List<TwitchUser> Users;
+    public List<string> Usernames;
+    //public List<String> Users;
+    //public Dictionary<String, List<String>> UsersToInputMap;
+
+    ///TODO:
+    ///create a map of username to list of user's inputs
+    //List <String> GetChatInputsByUser(string user)
+    //{
+        //return UsersToInputMap.TryGetValue(user,null);
+    //}
+
     void Start()
     {
         //Subscribe for events
@@ -26,6 +42,9 @@ public class TwitchIrcExample : MonoBehaviour
         TwitchIrc.Instance.OnUserJoined += OnUserJoined;
         TwitchIrc.Instance.OnServerMessage += OnServerMessage;
 		TwitchIrc.Instance.OnExceptionThrown += OnExceptionThrown;
+
+        //instantiate list of users:
+        Users = new List<TwitchUser>();
     }
 
     public void Connect()
@@ -64,28 +83,63 @@ public class TwitchIrcExample : MonoBehaviour
         Debug.Log(message);
     }
 
+    /// <summary>
+    /// Finds or creates a record of the user
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="userFound"></param>
+    /// <returns></returns>
+    TwitchUser findUser(string name)
+    {
+        foreach (TwitchUser user in Users)
+        {
+            if (user.GetName() == name)
+            {
+                user.RecordMessage(name);
+                return user;
+            }
+        }
+
+        //if user is not found:
+        TwitchUser newUser = new TwitchUser(name);
+        Users.Add(newUser);
+        Usernames.Add(name);
+        return newUser;
+    }
+
     //Receive username that has been left from channel 
     void OnChannelMessage(ChannelMessageEventArgs channelMessageArgs)
     {
         ChatText.text += "<b>" + channelMessageArgs.From + ":</b> " + channelMessageArgs.Message + "\n";
+
+        // Record User input data
+        TwitchUser currentUser = findUser(channelMessageArgs.From);
+        currentUser.RecordMessage(channelMessageArgs.Message);
+
+        bool validInput = true;
         Debug.Log("MESSAGE: " + channelMessageArgs.From + ": " + channelMessageArgs.Message);
         ChatText.GetComponentInParent<ScrollRect>()
             .GetComponent<ScrollRect>()
                 .verticalNormalizedPosition = 0f;
         if (channelMessageArgs.Message.ToLower() == "up") {
             cBuff.Input(0, channelMessageArgs.From);
+            currentUser.IncUp();
         }
         else if (channelMessageArgs.Message.ToLower() == "down") {
             cBuff.Input(1, channelMessageArgs.From);
+            currentUser.IncDown();
         }
         else if (channelMessageArgs.Message.ToLower() == "left") {
             cBuff.Input(2, channelMessageArgs.From);
+            currentUser.IncLeft();
         }
         else if (channelMessageArgs.Message.ToLower() == "right") {
             cBuff.Input(3, channelMessageArgs.From);
+            currentUser.IncRight();
         }
         else if (channelMessageArgs.Message.ToLower() == "fire") {
             cBuff.Input(4, channelMessageArgs.From);
+            currentUser.IncFire();
         }
         else if (channelMessageArgs.Message == "Kappa") {
             if (kappaCD) {
@@ -93,6 +147,7 @@ public class TwitchIrcExample : MonoBehaviour
                 kappaCD = false;
                 StartCoroutine(KappaWait());
             }
+            currentUser.IncKappa();
         }
         else if (channelMessageArgs.Message == "panicBasket") {
             if (panicCD) {
@@ -102,6 +157,7 @@ public class TwitchIrcExample : MonoBehaviour
                 StartCoroutine(PanicWait());
 				cBuff.alert(6, channelMessageArgs.From);
             }
+            currentUser.IncPanicBasket();
         }
         else if (channelMessageArgs.Message.ToLower() == "black") {
             cBuff.Color(Color.black, channelMessageArgs.From);
@@ -136,6 +192,15 @@ public class TwitchIrcExample : MonoBehaviour
         else if (channelMessageArgs.Message.ToLower() == "yellow") {
             cBuff.Color(Color.yellow, channelMessageArgs.From);
         }
+        else
+        {
+            validInput = false;
+        }
+
+        if (validInput)
+        {
+            currentUser.IncValidInputs();
+        }
     }
 
         //Get the name of the user who joined to channel 
@@ -143,6 +208,7 @@ public class TwitchIrcExample : MonoBehaviour
     {
         //ChatText.text += "<b>" + "USER JOINED" + ":</b> " + userJoinedArgs.User + "\n";
         Debug.Log("USER JOINED: " + userJoinedArgs.User);
+        //Users.Add(userJoinedArgs.User);
     }
 
 
@@ -150,7 +216,7 @@ public class TwitchIrcExample : MonoBehaviour
     void OnUserLeft(UserLeftEventArgs userLeftArgs)
     {
         //ChatText.text += "<b>" + "USER JOINED" + ":</b> " + userLeftArgs.User + "\n";
-        Debug.Log("USER JOINED: " + userLeftArgs.User);
+        Debug.Log("USER LEFT: " + userLeftArgs.User);
     }
 
     //Receive exeption if something goes wrong
@@ -177,4 +243,15 @@ public class TwitchIrcExample : MonoBehaviour
         yield return new WaitForSeconds(5);
         panicCD = true;
     }
+
+    // debug code, temporary
+    //public void Update()
+    //{
+    //    if (Input.GetKey(KeyCode.D))
+    //    {
+    //        foreach (TwitchUser u in Users){
+    //            u.DebugPrint();
+    //        }
+    //    }
+    //}
 }
