@@ -9,7 +9,9 @@ public class GridManager : MonoBehaviour {
     GridNode[,] grid = new GridNode[10,10];
 	public int numBases = 2;
 
-	public GameObject UICanvas;
+    public GameObject BuildingNode;
+
+    public GameObject UICanvas;
 	public GameObject MonsterWinCanvas;
 	public GameObject monsterWinSound;
 
@@ -21,6 +23,19 @@ public class GridManager : MonoBehaviour {
 	}
 
 	void Awake () {
+        //instantiate all of the building nodes
+        for (float x = -45; x <= 0; x += 5f)
+        {
+            for (float z = -45; z <= 0; z += 5f)
+            {
+                GameObject temp = Instantiate(BuildingNode, new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z), transform.rotation) as GameObject;
+                temp.transform.parent = transform;
+                if ((x == -35 && z == -10) || (x == -30 && z == -40))
+                {
+                    temp.GetComponent<GridNode>().startBase = true;
+                }
+            }
+        }
 
         rand = new System.Random();
 
