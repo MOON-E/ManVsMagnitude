@@ -9,11 +9,14 @@ public class MissileBlast : MonoBehaviour {
     Renderer rend;
 
 	public GameObject missileExplode;
+    private Transform blastArea;
 
     // Use this for initialization
     void Start () {
         timeUntilBlast = mBlastTime;
         rend = GetComponent<Renderer>();
+        blastArea = this.transform.GetChild(0);
+        Debug.DrawLine(blastArea.position, new Vector3(0, blastArea.GetComponent<SphereCollider>().radius * blastArea.localScale.y, 0) + blastArea.position, Color.blue, 10);
     }
 	
 	// Update is called once per frame
@@ -26,7 +29,7 @@ public class MissileBlast : MonoBehaviour {
 
         if (timeUntilBlast <= float.Epsilon) {
 			Instantiate(missileExplode);
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, blastRadius);
+            Collider[] hitColliders = Physics.OverlapSphere(blastArea.transform.position, blastArea.GetComponent<SphereCollider>().radius*blastArea.localScale.x);
             foreach (Collider c in hitColliders) {
                 if (c.gameObject.GetComponent<MonsterGridMovement>()) monster = c.gameObject.GetComponent<MonsterGridMovement>();
             }
@@ -34,13 +37,5 @@ public class MissileBlast : MonoBehaviour {
 
             Destroy(this.gameObject);
         }
-    }
-
-    void OnGUI()
-    {
-            GUI.DrawTexture(new Rect(Camera.main.WorldToScreenPoint(transform.position).x - 50,
-                                    -Camera.main.WorldToScreenPoint(transform.position).y - 50 + Screen.height,
-                                    100, 100),
-                Resources.Load("Images/MissileCircle") as Texture);
     }
 }

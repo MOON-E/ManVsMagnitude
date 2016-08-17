@@ -14,9 +14,13 @@ public class CommanderUnitControl : MonoBehaviour {
     private Vector2 startBoxPos = Vector2.zero;           //drag select box
     private Vector2 endBoxPos = Vector2.zero;
 
+    private static int ignoreUnitClickLayerMask = 1 << 8;
+    private static int unitClickLayerMask = Physics.DefaultRaycastLayers ^ ignoreUnitClickLayerMask; // set up layer mask that excludes all normally excluded layers, as well as layer 8, the "ignore unit raycasts" layer
+
     // Use this for initialization
     void Start () {
-	    unitAbilitiesPanel = GameObject.Find("Canvas/UnitAbilitiesPanel");
+        
+        unitAbilitiesPanel = GameObject.Find("Canvas/UnitAbilitiesPanel");
         if(unitAbilitiesPanel != null)
             unitAbilitiesPanel.SetActive(false);
         foreach (Unit u in GameObject.FindObjectsOfType<Unit>())
@@ -35,7 +39,7 @@ public class CommanderUnitControl : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        Vector3 mousePosWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 13f));
+        Vector3 mousePosWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.y));
 
         if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 
@@ -83,9 +87,9 @@ public class CommanderUnitControl : MonoBehaviour {
     void LeftClick(Vector3 mousePosWorld)
     {
         RaycastHit hit;
-        if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit))
+        if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit, Mathf.Infinity, unitClickLayerMask))
         {
-            Debug.DrawLine(mousePosWorld, hit.point, Color.green);
+            Debug.DrawLine(mousePosWorld, hit.point, Color.green, 10);
             Unit clickedUnit = hit.transform.GetComponent<Unit>();
             if (clickedUnit != null)
             {
@@ -120,7 +124,7 @@ public class CommanderUnitControl : MonoBehaviour {
             }
             else
             {
-                Debug.DrawLine(transform.position, mousePosWorld, Color.red);
+                Debug.DrawLine(transform.position, mousePosWorld, Color.red, 10);
                 if (!Input.GetKey(KeyCode.LeftShift)) //If multiselect key is not being held, deselect all units
                 {
                     Clear();
@@ -129,7 +133,7 @@ public class CommanderUnitControl : MonoBehaviour {
         }
         else
         {
-            Debug.DrawLine(transform.position, mousePosWorld, Color.grey);
+            Debug.DrawLine(transform.position, mousePosWorld, Color.grey, 10);
             if (!Input.GetKey(KeyCode.LeftShift)) //If multiselect key is not being held, deselect all units
             {
                 Clear();
@@ -150,9 +154,9 @@ public class CommanderUnitControl : MonoBehaviour {
     void RightClick(Vector3 mousePosWorld)
     {
         RaycastHit hit;
-        if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit))
+        if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit, Mathf.Infinity, unitClickLayerMask))
         {
-            Debug.DrawLine(transform.position, hit.point, Color.magenta);
+            Debug.DrawLine(transform.position, hit.point, Color.magenta, 10);
             Unit clickedUnit = hit.transform.GetComponent<Unit>();
             if (clickedUnit != null)    //We clicked on another unit, so we should contextually decide what action to do
             {
