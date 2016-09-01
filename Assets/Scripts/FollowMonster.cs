@@ -17,7 +17,7 @@ public class FollowMonster : MonoBehaviour {
 
     bool MonsterInView() {
         Vector3 MainCamMonsterLocation = Camera.main.WorldToViewportPoint(monster.transform.position);
-        Debug.Log(MainCamMonsterLocation);
+        //Debug.Log(MainCamMonsterLocation);
         return (MainCamMonsterLocation.x >= 0 && MainCamMonsterLocation.x <= 1 &&
             MainCamMonsterLocation.y >= 0 && MainCamMonsterLocation.y <= 1 &&
             MainCamMonsterLocation.z >= 0);
