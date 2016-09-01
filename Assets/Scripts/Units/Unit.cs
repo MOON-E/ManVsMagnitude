@@ -62,6 +62,22 @@ public class Unit : MonoBehaviour {
 
     }
 
+    virtual public void TakeDamage(float damage)
+    {
+        mHP -= damage;
+        if (mHP <= 0)
+        {
+            OnDeath();
+        }
+    }
+
+    virtual public void OnDeath()
+    {
+        //TODO:
+        //all this when monster collides with a unit
+        //Destroy this instance
+    }
+
     //void OnDestroy()
     //{
     //    Camera.main.GetComponent<CommanderUnitControl>().DeathReport(this);
