@@ -15,7 +15,7 @@ public class CommanderBuildingControl : MonoBehaviour {
     public static Dictionary<KeyCode, string> BuildHotkeyToBuildingMap;
     public static Dictionary<string, GameObject> NameToBuildingMap;
 
-    bool missileTargeting;
+    public bool ableToBuild = true;
 
 	public float barrierCooldownTime;
 	private float barrierProductionCharge;
@@ -34,13 +34,6 @@ public class CommanderBuildingControl : MonoBehaviour {
 
     Building mBuildingGhost = null; // reference to "ghost" building you plan to build
     List<Building> mBuildings = new List<Building>();
-
-    public GameObject MissileBlastArea;
-    private GameObject currentMissileTarget;
-
-    // set up layer mask that excludes all normally excluded layers, as well as layer 8, the "ignore unit raycasts" layer
-    private static int ignoreUnitClickLayerMask = 1 << 8;
-    private static int missileTargetingLayerMask = Physics.DefaultRaycastLayers ^ ignoreUnitClickLayerMask;
 
     // Use this for initialization
     void Start () {
@@ -84,7 +77,7 @@ public class CommanderBuildingControl : MonoBehaviour {
         buttons[3].interactable = missileTowerReady;
     
 
-        if (Input.GetKeyDown(KeyCode.Mouse1)&&!missileTargeting)
+        if (Input.GetKeyDown(KeyCode.Mouse1)&&ableToBuild)
 			UnqueueBuilding();
         if (Input.GetKeyDown (KeyCode.B) && barrierReady) {
 			if (mBuildingGhost != null)
@@ -117,14 +110,17 @@ public class CommanderBuildingControl : MonoBehaviour {
             if (Physics.Raycast(mouseRay, out hit))
             {
                 hoverNode = hit.transform.GetComponent<GridNode>();
-                if(hoverNode != null) {
+                if (hoverNode != null)
+                {
                     mBuildingGhost.transform.position = hoverNode.transform.position;
                 }
             }
 
-            if ((hoverNode != null) && hoverNode.CanBuildHere()) {
+            if ((hoverNode != null) && hoverNode.CanBuildHere())
+            {
                 rend.material.color = Color.green;
-                if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
                     mBuildingGhost.StartBuild(hoverNode);
                     mBuildings.Add(mBuildingGhost);
                     hoverNode.Build(mBuildingGhost);
@@ -132,34 +128,12 @@ public class CommanderBuildingControl : MonoBehaviour {
                 }
             }
             else rend.material.color = Color.red;
-                
-        }
 
-        if (missileTargeting) {
-            Vector3 mousePosWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.y));
-
-            RaycastHit hit;
-            if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit, Mathf.Infinity, missileTargetingLayerMask))
-                currentMissileTarget.transform.position = hit.point;
-            
-            if (Input.GetKeyDown(KeyCode.Mouse1))
-            {
-                Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit1;
-
-                if (Physics.Raycast(mouseRay, out hit1))
-                {
-                    Object.Destroy(currentMissileTarget);
-                    UnqueueBuilding();
-                    GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/MissileBlast"), hit.point, Quaternion.identity);
-                }
-            }
         }
 	}
 
 	public void UnqueueBuilding() {
-
-        missileTargeting = false;
+        ableToBuild = true;
 
 		if (mBuildingGhost != null) {
 			DestroyObject (mBuildingGhost.gameObject);
@@ -199,18 +173,4 @@ public class CommanderBuildingControl : MonoBehaviour {
 		factoryReady = false;
 	}
 
-    public void MissileLaunch()
-    {
-        Debug.Log("launching missile");
-        UnqueueBuilding();
-        missileTargeting = true;
-
-        Vector3 mousePosWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 13f));
-        mousePosWorld = Vector3.Scale(mousePosWorld, new Vector3(3.6f, 1, 3.6f));
-
-        RaycastHit hit;
-        if (Physics.Raycast(mousePosWorld, new Vector3(0, -1, 0), out hit, Mathf.Infinity, missileTargetingLayerMask))
-            currentMissileTarget = Object.Instantiate(MissileBlastArea, hit.point, new Quaternion()) as GameObject;
-        //Debug.DrawLine(transform.position, hit.point, Color.red, 10);
-    }
 }

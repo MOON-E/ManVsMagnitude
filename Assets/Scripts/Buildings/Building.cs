@@ -8,7 +8,8 @@ public class Building : MonoBehaviour {
     BoxCollider mCollider;
     public float mBuildTime = 10;
     float timeUntilBuilt;
-    public int collCounter = 0;
+    [HideInInspector]
+    protected int collCounter = 0;
 
     GridNode location = null;
 
@@ -28,8 +29,7 @@ public class Building : MonoBehaviour {
               
 	}
 	
-	// Update is called once per frame
-	protected void Update () {
+	protected virtual void Update () {
         switch(mBuildState){
             case (BuildState.PREBUILD):
                 // While in this state, player is deciding whether or not to build, player will manually change state to BUILDING when needed
