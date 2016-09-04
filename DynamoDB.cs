@@ -6,9 +6,9 @@ using Amazon.Runtime;
 using Amazon;
 
 public class DynamoDB : MonoBehaviour {
-	public string CognitoPoolRegion = RegionEndpoint.USWest1.SystemName;
-	public string DynamoRegion = RegionEndpoint.USWest1.SystemName;
-	public string IdentityPoolId = "";
+	public string CognitoPoolRegion = RegionEndpoint.USWest2.SystemName;
+	public string DynamoRegion = RegionEndpoint.USWest2.SystemName;
+	public string IdentityPoolId = "us-west-2:52c851dc-4e19-4eba-9e85-f7a0874e0be7";
 
 	private RegionEndpoint _CognitoPoolRegion
 	{

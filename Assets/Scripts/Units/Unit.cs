@@ -88,11 +88,16 @@ public class Unit : MonoBehaviour {
     //{
     //    Camera.main.GetComponent<CommanderUnitControl>().DeathReport(this);
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) 
     {
         if (other.gameObject == mMoveCursor)
         {
             GameObject.Destroy(mMoveCursor);
         }
+    }
+
+    void OnCollisionEnter(Collision collision) 
+    {
+
     }
 }

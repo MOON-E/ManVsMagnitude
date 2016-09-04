@@ -195,10 +195,15 @@ public class GridNode : MonoBehaviour
     {
         Extinguish();
 
-        if (building is Missile)
+        if (building is ManualFireBuilding)
         {
-            Missile m = building as Missile;
-            m.launch();
+            if (building is Missile) {
+                ((Missile)building).Launch();
+            }
+            if (building is Railgun)
+            {
+                ((Railgun)building).Launch();
+            }
         }
         if (building is Factory)
         {
