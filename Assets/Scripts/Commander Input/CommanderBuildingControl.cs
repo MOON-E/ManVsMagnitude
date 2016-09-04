@@ -29,6 +29,11 @@ public class CommanderBuildingControl : MonoBehaviour {
 	public float missileTowerCooldownTime;
 	private float missileTowerProductionCharge;
 	bool missileTowerReady = true;
+    public float resourceBuildingCooldownTime;
+    private float resourceBuildingProductionCharge;
+    bool resourceBuildingReady = true;
+
+    public uint resourceCount;
 
     public Button[] buttons;
 
@@ -69,12 +74,22 @@ public class CommanderBuildingControl : MonoBehaviour {
 				missileTowerProductionCharge = 0;
 			}
 		}
+        if(!resourceBuildingReady)
+        {
+            resourceBuildingProductionCharge += Time.deltaTime;
+            if(resourceBuildingProductionCharge >= resourceBuildingCooldownTime)
+            {
+                resourceBuildingReady = true;
+                resourceBuildingProductionCharge = 0;
+            }
+        }
 
         //Button grey out
         buttons[0].interactable = barrierReady;
         buttons[1].interactable = pylonReady;
         buttons[2].interactable = factoryReady;
         buttons[3].interactable = missileTowerReady;
+        buttons[4].interactable = resourceBuildingReady;
     
 
         if (Input.GetKeyDown(KeyCode.Mouse1)&&ableToBuild)
@@ -99,6 +114,12 @@ public class CommanderBuildingControl : MonoBehaviour {
 				UnqueueBuilding ();
 			QueueFactory();
 		}
+        if (Input.GetKeyDown(KeyCode.R) && resourceBuildingReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueueResourceBuilding();
+        }
 
         if (mBuildingGhost)
         {
@@ -172,5 +193,14 @@ public class CommanderBuildingControl : MonoBehaviour {
 		mBuildingGhost = obj.GetComponent<Building>();
 		factoryReady = false;
 	}
-
+    public void QueueResourceBuilding()
+    {
+        if (!resourceBuildingReady) return;
+        Debug.Log("making resource building");
+        UnqueueBuilding();
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/ResourceBuilding"), new Vector3(0, 0, 0), Quaternion.identity);
+        obj.GetComponent<ResourceBuilding>().commanderRef = this;
+        mBuildingGhost = obj.GetComponent<Building>();
+        resourceBuildingReady = false;
+    }
 }

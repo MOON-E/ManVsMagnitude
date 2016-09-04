@@ -7,15 +7,18 @@ public class Mine : MonoBehaviour {
     public float radius = 10.0f; // decides the radius of the explosion
     public float detonationTimer = 1.0f;
     ArrayList objectsInBlastZone;
-    SphereCollider explosion;
-    BoxCollider mTrigger;
+    public SphereCollider explosion;
+    public CapsuleCollider mTrigger;
 
 	// Use this for initialization
 	void Start () {
+        mTrigger = GetComponent<CapsuleCollider>();
         explosion = GetComponent<SphereCollider>();
         explosion.radius = radius;
         explosion.enabled = false;
         explosion.isTrigger = true;
+        mTrigger.isTrigger = true;
+        objectsInBlastZone = new ArrayList();
 	}
 	
 	// Update is called once per frame
@@ -24,7 +27,7 @@ public class Mine : MonoBehaviour {
         {
             detonationTimer -= Time.deltaTime;
         }
-        if (detonationTimer >= 0)
+        if (detonationTimer <= 0)
         {
             Detonate();
         }
@@ -35,6 +38,7 @@ public class Mine : MonoBehaviour {
         if (coll.gameObject.GetComponent<MonsterGridMovement>() && !explosion.enabled)
         {
             TriggerMine();
+            Debug.Log("Monster hit mine");
         }
         if ((coll.gameObject.GetComponent<MonsterGridMovement>() || coll.gameObject.GetComponent<Unit>()) && explosion.enabled)
         {
@@ -54,11 +58,13 @@ public class Mine : MonoBehaviour {
     {
         explosion.enabled = true;
         mTrigger.enabled = false;
+        Debug.Log("Mine Triggered");
     }
 
     //Play effect, damages everything in range, and destroys itself
     private void Detonate()
     {
+        Debug.Log("Mine Detonated");
         //TODO: Play any explosion effects:
 
         // deal damage
