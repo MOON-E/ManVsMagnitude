@@ -95,11 +95,11 @@ public class Building : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider coll){
+    protected void OnTriggerEnter(Collider coll){
         Debug.Log("Collision enter");
         collCounter++;
     }
-    void OnTriggerExit(Collider other)
+    protected void OnTriggerExit(Collider other)
     {
         collCounter--;
     }

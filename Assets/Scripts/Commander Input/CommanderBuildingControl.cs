@@ -29,6 +29,7 @@ public class CommanderBuildingControl : MonoBehaviour {
 	public float missileTowerCooldownTime;
 	private float missileTowerProductionCharge;
 	bool missileTowerReady = true;
+    bool mineReady = true;
 
     public Button[] buttons;
 
@@ -106,6 +107,12 @@ public class CommanderBuildingControl : MonoBehaviour {
 				UnqueueBuilding ();
 			QueueFactory();
 		}
+        if (Input.GetKeyDown(KeyCode.M) && mineReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueueMine();
+        }
 
         if (mBuildingGhost)
         {
@@ -198,6 +205,15 @@ public class CommanderBuildingControl : MonoBehaviour {
 		mBuildingGhost = obj.GetComponent<Building>();
 		factoryReady = false;
 	}
+    public void QueueMine()
+    {
+        if (!mineReady) return;
+        Debug.Log("Building Mine");
+        UnqueueBuilding();
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Mine"), new Vector3(0, 0, 0), Quaternion.identity);
+        mBuildingGhost = obj.GetComponent<Building>();
+        mineReady = false;
+    }
 
     public void MissileLaunch()
     {

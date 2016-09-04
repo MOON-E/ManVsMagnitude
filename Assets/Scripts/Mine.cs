@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Mine : MonoBehaviour {
+public class Mine : Building {
 
     public float baseDamage = 10;
     public float radius = 10.0f; // decides the radius of the explosion
@@ -12,6 +12,7 @@ public class Mine : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        base.Start();
         mTrigger = GetComponent<CapsuleCollider>();
         explosion = GetComponent<SphereCollider>();
         explosion.radius = radius;
@@ -23,6 +24,7 @@ public class Mine : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        base.Update();
         if (explosion.enabled)
         {
             detonationTimer -= Time.deltaTime;
@@ -35,6 +37,11 @@ public class Mine : MonoBehaviour {
 
     void OnTriggerEnter(Collider coll)
     {
+        if (!base.Completed())
+        {
+            base.OnTriggerEnter(coll);
+            return;
+        }
         if (coll.gameObject.GetComponent<MonsterGridMovement>() && !explosion.enabled)
         {
             TriggerMine();
@@ -48,6 +55,11 @@ public class Mine : MonoBehaviour {
 
     void OnTriggerExit(Collider coll)
     {
+        if (!base.Completed())
+        {
+            base.OnTriggerExit(coll);
+            return;
+        }
         if (explosion.enabled && (coll.gameObject.GetComponent<Unit>() || coll.gameObject.GetComponent<MonsterGridMovement>()))
         {
             objectsInBlastZone.Remove(coll.gameObject);

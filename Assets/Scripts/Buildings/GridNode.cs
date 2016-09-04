@@ -105,10 +105,10 @@ public class GridNode : MonoBehaviour
     //no concern about return value of destroybuilding, because it must always be false (destroy button is disabled is building is playerbase)
     public void CommanderDestroy()
     {
-        DestroyBuilding();
+        DestroyBuilding(false);
     }
 
-    public bool DestroyBuilding()
+    public bool DestroyBuilding(bool smashedByMonster = true)
     { //returns true if the destroyed building was a base
         if (BuildingExistsAndComplete())
         {
@@ -124,6 +124,12 @@ public class GridNode : MonoBehaviour
                         catch { }
                     }
                 }
+            }
+            Mine m = building as Mine;
+            if (m != null && smashedByMonster) // if the monster stepped on the mine, don't destroy it. Just trigger it.
+            {
+                // TODO: maybe don't do anything, see if it works.
+                return false;
             }
             Destroy(building.gameObject);
             if (startBase) return true;
