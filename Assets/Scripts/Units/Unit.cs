@@ -23,6 +23,9 @@ public class Unit : MonoBehaviour {
 
     public bool isSelected = false;
 
+    public GameObject moveCursor;
+    private GameObject mMoveCursor;
+
 	// Use this for initialization
 	protected void Start () {
         rigidbody = GetComponent<Rigidbody>();
@@ -41,6 +44,9 @@ public class Unit : MonoBehaviour {
         this.destination = destination;
         this.destination.y = transform.position.y; //Disable verticality for now
         isMoving = true;
+
+        if (mMoveCursor) { Object.Destroy(mMoveCursor); }
+        mMoveCursor = Instantiate(moveCursor, destination, new Quaternion()) as GameObject;
 
         navmeshagent.SetDestination(destination);
     }
@@ -81,5 +87,12 @@ public class Unit : MonoBehaviour {
     //void OnDestroy()
     //{
     //    Camera.main.GetComponent<CommanderUnitControl>().DeathReport(this);
-    //}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == mMoveCursor)
+        {
+            GameObject.Destroy(mMoveCursor);
+        }
+    }
 }
