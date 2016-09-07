@@ -18,19 +18,19 @@ public class CommanderBuildingControl : MonoBehaviour {
 
     public bool ableToBuild = true;
 
-	public readonly float barrierCooldownTime;
+	public float barrierCooldownTime;
     private float barrierProductionCharge;
     bool barrierReady = true;
-    public readonly float pylonCooldownTime;
+    public float pylonCooldownTime;
     private float pylonProductionCharge;
     bool pylonReady = true;
-    public readonly float factoryCooldownTime;
+    public float factoryCooldownTime;
     private float factoryProductionCharge;
     bool factoryReady = true;
-    public readonly float missileTowerCooldownTime;
+    public float missileTowerCooldownTime;
     private float missileTowerProductionCharge;
     bool missileTowerReady = true;
-    public readonly float mineCooldownTime;
+    public float mineCooldownTime;
     private float mineProductionCharge;
     bool mineReady = true;
     public float resourceBuildingCooldownTime;
