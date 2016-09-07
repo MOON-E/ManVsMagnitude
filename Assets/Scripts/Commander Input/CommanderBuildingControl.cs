@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 // Script that handles player placing buildings
 /* Pseudocode:
@@ -17,18 +18,20 @@ public class CommanderBuildingControl : MonoBehaviour {
 
     public bool ableToBuild = true;
 
-	public float barrierCooldownTime;
-	private float barrierProductionCharge;
-	bool barrierReady = true;
-	public float pylonCooldownTime;
-	private float pylonProductionCharge;
-	bool pylonReady = true;
-	public float factoryCooldownTime;
-	private float factoryProductionCharge;
-	bool factoryReady = true;
-	public float missileTowerCooldownTime;
-	private float missileTowerProductionCharge;
-	bool missileTowerReady = true;
+	public readonly float barrierCooldownTime;
+    private float barrierProductionCharge;
+    bool barrierReady = true;
+    public readonly float pylonCooldownTime;
+    private float pylonProductionCharge;
+    bool pylonReady = true;
+    public readonly float factoryCooldownTime;
+    private float factoryProductionCharge;
+    bool factoryReady = true;
+    public readonly float missileTowerCooldownTime;
+    private float missileTowerProductionCharge;
+    bool missileTowerReady = true;
+    public readonly float mineCooldownTime;
+    private float mineProductionCharge;
     bool mineReady = true;
     public float resourceBuildingCooldownTime;
     private float resourceBuildingProductionCharge;
@@ -42,92 +45,21 @@ public class CommanderBuildingControl : MonoBehaviour {
     List<Building> mBuildings = new List<Building>();
 
     // Use this for initialization
-    void Start () {
+    void Start() {
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (!barrierReady) {
-			barrierProductionCharge += Time.deltaTime;
-			if (barrierProductionCharge >= barrierCooldownTime) {
-				barrierReady = true;
-				barrierProductionCharge = 0;
-			}
-		}
-		if (!pylonReady) {
-			pylonProductionCharge += Time.deltaTime;
-			if (pylonProductionCharge >= pylonCooldownTime) {
-				pylonReady = true;
-				pylonProductionCharge = 0;
-			}
-		}
-		if (!factoryReady) {
-			factoryProductionCharge += Time.deltaTime;
-            if (factoryProductionCharge >= factoryCooldownTime) {
-				factoryReady = true;
-				factoryProductionCharge = 0;
-			}
-		}
-		if (!missileTowerReady) {
-			missileTowerProductionCharge += Time.deltaTime;
-            if (missileTowerProductionCharge >= missileTowerCooldownTime) {
-				missileTowerReady = true;
-				missileTowerProductionCharge = 0;
-			}
-		}
-        if(!resourceBuildingReady)
-        {
-            resourceBuildingProductionCharge += Time.deltaTime;
-            if(resourceBuildingProductionCharge >= resourceBuildingCooldownTime)
-            {
-                resourceBuildingReady = true;
-                resourceBuildingProductionCharge = 0;
-            }
-        }
 
-        //Button grey out
-        buttons[0].interactable = barrierReady;
-        buttons[1].interactable = pylonReady;
-        buttons[2].interactable = factoryReady;
-        buttons[3].interactable = missileTowerReady;
-        buttons[4].interactable = resourceBuildingReady;
-    
+    // Update is called once per frame
+    void Update() {
+        UpdateBuildingCooldowns();
 
-        if (Input.GetKeyDown(KeyCode.Mouse1)&&ableToBuild)
-			UnqueueBuilding();
-        if (Input.GetKeyDown (KeyCode.B) && barrierReady) {
-			if (mBuildingGhost != null)
-				UnqueueBuilding ();
-			QueueBarrier ();
-		}
-		if (Input.GetKeyDown(KeyCode.P) && pylonReady){
-			if (mBuildingGhost != null)
-				UnqueueBuilding ();
-			QueuePylon();
-		}
-		if (Input.GetKeyDown (KeyCode.M) && missileTowerReady) {
-			if (mBuildingGhost != null)
-				UnqueueBuilding ();
-			QueueLaser ();
-		}
-		if (Input.GetKeyDown(KeyCode.F) && factoryReady){
-			if (mBuildingGhost != null)
-				UnqueueBuilding ();
-			QueueFactory();
-		}
-        if (Input.GetKeyDown(KeyCode.M) && mineReady)
-        {
-            if (mBuildingGhost != null)
-                UnqueueBuilding();
-            QueueMine();
-        }
-        if (Input.GetKeyDown(KeyCode.R) && resourceBuildingReady)
-        {
-            if (mBuildingGhost != null)
-                UnqueueBuilding();
-            QueueResourceBuilding();
-        }
+        //update GUI based on cooldowns
+        buttons[0].interactable = barrierReady && ableToBuild;
+        buttons[1].interactable = pylonReady && ableToBuild;
+        buttons[2].interactable = factoryReady && ableToBuild;
+        buttons[3].interactable = missileTowerReady && ableToBuild;
+        buttons[4].interactable = resourceBuildingReady && ableToBuild;
 
+        //update building ghost location
         if (mBuildingGhost)
         {
             Renderer rend = mBuildingGhost.GetComponent<Renderer>();
@@ -158,48 +90,161 @@ public class CommanderBuildingControl : MonoBehaviour {
             else rend.material.color = Color.red;
 
         }
+
+        if (ableToBuild)
+            GetBuildingControlInput();
     }
 
-	public void UnqueueBuilding() {
-        ableToBuild = true;
+    private void UpdateBuildingCooldowns()
+    {
+        if (!barrierReady)
+        {
+            barrierProductionCharge += Time.deltaTime;
+            if (barrierProductionCharge >= barrierCooldownTime)
+            {
+                barrierReady = true;
+                barrierProductionCharge = 0;
+            }
+        }
+        if (!pylonReady)
+        {
+            pylonProductionCharge += Time.deltaTime;
+            if (pylonProductionCharge >= pylonCooldownTime)
+            {
+                pylonReady = true;
+                pylonProductionCharge = 0;
+            }
+        }
+        if (!factoryReady)
+        {
+            factoryProductionCharge += Time.deltaTime;
+            if (factoryProductionCharge >= factoryCooldownTime)
+            {
+                factoryReady = true;
+                factoryProductionCharge = 0;
+            }
+        }
+        if (!missileTowerReady)
+        {
+            missileTowerProductionCharge += Time.deltaTime;
+            if (missileTowerProductionCharge >= missileTowerCooldownTime)
+            {
+                missileTowerReady = true;
+                missileTowerProductionCharge = 0;
+            }
+        }
+        if (!resourceBuildingReady)
+        {
+            resourceBuildingProductionCharge += Time.deltaTime;
+            if (resourceBuildingProductionCharge >= resourceBuildingCooldownTime)
+            {
+                resourceBuildingReady = true;
+                resourceBuildingProductionCharge = 0;
+            }
+        }
+        if (!mineReady)
+        {
+            mineProductionCharge += Time.deltaTime;
+            if (mineProductionCharge >= mineCooldownTime)
+            {
+                mineReady = true;
+                mineProductionCharge = 0;
+            }
+        }
+    }
 
-		if (mBuildingGhost != null) {
-			DestroyObject (mBuildingGhost.gameObject);
-			mBuildingGhost = null;
-		}
-	}
-	public void QueueBarrier() {
-		if (!barrierReady)return;
-		Debug.Log("making barrier");
+    private void GetBuildingControlInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+            UnqueueBuilding();
+        if (Input.GetKeyDown(KeyCode.B) && barrierReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueueBarrier();
+        }
+        if (Input.GetKeyDown(KeyCode.P) && pylonReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueuePylon();
+        }
+        if (Input.GetKeyDown(KeyCode.M) && missileTowerReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueueLaser();
+        }
+        if (Input.GetKeyDown(KeyCode.F) && factoryReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueueFactory();
+        }
+        if (Input.GetKeyDown(KeyCode.R) && resourceBuildingReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueueResourceBuilding();
+        }
+        if (Input.GetKeyDown(KeyCode.X) && mineReady)
+        {
+            if (mBuildingGhost != null)
+                UnqueueBuilding();
+            QueueMine();
+        }
+    }
+
+    public void DisableBuilding()
+    {
         UnqueueBuilding();
-        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0,0,0), Quaternion.identity);
-		mBuildingGhost = obj.GetComponent<Building>();
-		barrierReady = false;
-	}
-	public void QueuePylon() {
-		if (!pylonReady) return;
-		Debug.Log("making pylon");
+        ableToBuild = false;
+    }
+
+    public void EnableBuilding()
+    {
+        ableToBuild = true;
+    }
+
+    public void UnqueueBuilding() {
+        if (mBuildingGhost != null) {
+            DestroyObject(mBuildingGhost.gameObject);
+            mBuildingGhost = null;
+        }
+    }
+
+    public void QueueBarrier() {
+        if (!barrierReady) return;
+        Debug.Log("making barrier");
         UnqueueBuilding();
-        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0,0,0), Quaternion.identity);
-		mBuildingGhost = obj.GetComponent<Building>();
-		pylonReady = false;
-	}
-	public void QueueLaser() {
-		if (!missileTowerReady) return;
-		Debug.Log("making missile");
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Barrier"), new Vector3(0, 0, 0), Quaternion.identity);
+        mBuildingGhost = obj.GetComponent<Building>();
+        barrierReady = false;
+    }
+    public void QueuePylon() {
+        if (!pylonReady) return;
+        Debug.Log("making pylon");
         UnqueueBuilding();
-        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Missile"), new Vector3(0,0,0), Quaternion.identity);
-		mBuildingGhost = obj.GetComponent<Building>();
-		missileTowerReady = false;
-	}
-	public void QueueFactory() {
-		if (!factoryReady) return;
-		Debug.Log("making factory");
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Pylon"), new Vector3(0, 0, 0), Quaternion.identity);
+        mBuildingGhost = obj.GetComponent<Building>();
+        pylonReady = false;
+    }
+    public void QueueLaser() {
+        if (!missileTowerReady) return;
+        Debug.Log("making missile");
         UnqueueBuilding();
-        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0,0,0), Quaternion.identity);
-		mBuildingGhost = obj.GetComponent<Building>();
-		factoryReady = false;
-	}
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Missile"), new Vector3(0, 0, 0), Quaternion.identity);
+        mBuildingGhost = obj.GetComponent<Building>();
+        missileTowerReady = false;
+    }
+    public void QueueFactory() {
+        if (!factoryReady) return;
+        Debug.Log("making factory");
+        UnqueueBuilding();
+        GameObject obj = (GameObject)Instantiate(Resources.Load("Prefabs/Factory"), new Vector3(0, 0, 0), Quaternion.identity);
+        mBuildingGhost = obj.GetComponent<Building>();
+        factoryReady = false;
+    }
 
     public void QueueMine()
     {
@@ -210,9 +255,7 @@ public class CommanderBuildingControl : MonoBehaviour {
         mBuildingGhost = obj.GetComponent<Building>();
         mineReady = false;
     }
-
-    public void MissileLaunch()
-
+    
     public void QueueResourceBuilding()
     {
         if (!resourceBuildingReady) return;
