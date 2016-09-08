@@ -173,7 +173,7 @@ public class CommanderBuildingControl : MonoBehaviour {
         {
             if (mBuildingGhost != null)
                 UnqueueBuilding();
-            QueueLaser();
+            QueueMissile();
         }
         if (Input.GetKeyDown(KeyCode.F) && factoryReady)
         {
@@ -229,7 +229,7 @@ public class CommanderBuildingControl : MonoBehaviour {
         mBuildingGhost = obj.GetComponent<Building>();
         pylonReady = false;
     }
-    public void QueueLaser() {
+    public void QueueMissile() {
         if (!missileTowerReady) return;
         Debug.Log("making missile");
         UnqueueBuilding();

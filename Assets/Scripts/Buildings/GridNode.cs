@@ -198,11 +198,11 @@ public class GridNode : MonoBehaviour
         if (building is ManualFireBuilding)
         {
             if (building is Missile) {
-                ((Missile)building).Launch();
+                ((Missile)building).TryLaunch();
             }
             if (building is Railgun)
             {
-                ((Railgun)building).Launch();
+                ((Railgun)building).TryLaunch();
             }
         }
         if (building is Factory)
