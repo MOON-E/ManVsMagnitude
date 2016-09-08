@@ -10,7 +10,10 @@ public class Railgun : ManualFireBuilding {
 
         //Camera.main.GetComponent<CommanderBuildingControl>().MissileLaunch();
 
-        Debug.Log("missile click");
+        Camera.main.GetComponent<CommanderBuildingControl>().ableToBuild = false;
+        //currentMissileTarget = (GameObject)Instantiate(MissileBlastArea, new Vector3(), Quaternion.identity);
+
+        Debug.Log("railgun click");
         GetComponent<MeshRenderer>().material.color = Color.red;
         mFireState = fireState.CHARGING;
     }
