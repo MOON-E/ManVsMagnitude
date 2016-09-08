@@ -50,8 +50,55 @@ public class UserGetAndSave : MonoBehaviour {
 					Debug.Log(newusername + " has been saved to db");
 
 				//else nothing, you're screwed cause it didn't save.
+				else {
+					Debug.Log(result.Exception.Message);
+				}
 
 			}));
+	}
+
+	private void ModifyUserInTable(string username, int newNumTimesDragonGreen)
+	{
+		userinfo user = null;
+
+		Context.LoadAsync<userinfo>(username, (result) => 
+		{
+				if(result.Exception == null)
+				{
+					user = result.Result;
+					user.NumTimesDragonGreen = newNumTimesDragonGreen;
+					Context.SaveAsync<userinfo>(user, (res) =>
+						{
+							if(res.Exception == null)
+							{
+								Debug.Log("updated " + username);
+							}
+							else 
+							{
+								Debug.Log(res.Exception.Message);
+							}
+						});
+				}
+				else
+				{
+					Debug.Log(result.Exception.Message);
+				}
+			
+		});
+
+	}
+
+	public void AfterMatchUpdate()
+	{
+		foreach (userinfo user in users)
+		{
+			ModifyUserInTable (user.username, user.NumTimesDragonGreen);
+		}
+	}
+
+	public void updateUser(string username, int newNumTimesDragonGreen)
+	{
+		//find user
 	}
 
 
@@ -65,7 +112,7 @@ public class UserGetAndSave : MonoBehaviour {
 				try {
 					var context = Context;
 
-					var search = context.ScanAsync<userinfo> (new ScanCondition ("NumTimesDragonGreen", ScanOperator.GreaterThan, 0));
+					var search = context.ScanAsync<userinfo> (new ScanCondition ("NumTimesDragonGreen", ScanOperator.GreaterThanOrEqual, 0));
 					search.GetRemainingAsync (result => {
 						if (result.Exception == null) {
 							users = result.Result;
@@ -107,15 +154,12 @@ public class UserGetAndSave : MonoBehaviour {
 				var response = ddbresult.Response;
 
 				TableDescription description = response.Table;
-				Debug.Log ("Name: " + description.TableName + "\n");
-				Debug.Log("# of items: " + description.ItemCount + "\n");
-				Debug.Log("Provision Throughput (read/sec): " + description.ProvisionedThroughput.ReadCapacityUnits + "\n");
-				Debug.Log("Provision Throughput (write/sec): " + description.ProvisionedThroughput.WriteCapacityUnits + "\n");
+
 			}, null);
 
 			_client = ddbClient;
 
-			FetchAllUsersFromAWS ();
+		//	FetchAllUsersFromAWS ();
 		});
 	}
 
